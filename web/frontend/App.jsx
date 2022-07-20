@@ -21,8 +21,12 @@ export default function App() {
             <NavigationMenu
               navigationLinks={[
                 {
-                  label: "Fabric List",
-                  destination: "/fabric-list-page",
+                  label: "Fabric Table",
+                  destination: "/fabrics/fabric-table",
+                },
+                {
+                  label: "Tag Table",
+                  destination: "/tags/tag-table",
                 },
               ]}
             />

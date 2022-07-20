@@ -1,20 +1,12 @@
-import {
-  Card,
-  Page,
-  Layout,
-  TextContainer,
-  Image,
-  Stack,
-  Link,
-  Heading,
-} from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { StatsCard as StatsCard } from "../components";
+import { Card, Page, Layout, TextContainer, Stack, Heading, Button } from "@shopify/polaris";
+import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
+import { StatsCard } from "../components";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <Page narrowWidth>
-      <TitleBar title="Fabric Options Editor" primaryAction={null} />
+      <TitleBar title="Fabric Options Editor App" primaryAction={null}/>
       <Layout>
         <Layout.Section>
           <Card sectioned>
@@ -26,46 +18,14 @@ export default function HomePage() {
             >
               <Stack.Item fill>
                 <TextContainer spacing="loose">
-                  <Heading>Fabric Options Editor</Heading>
+                  <Heading>Fabric Options Editor App</Heading>
                   <p>
                     This app will help you organize your fabric options so customers can view your inventory. 
-
-                    {/* Your app is ready to explore! It contains everything you
-                    need to get started including the{" "}
-                    <Link url="https://polaris.shopify.com/" external>
-                      Polaris design system
-                    </Link>
-                    ,{" "}
-                    <Link url="https://shopify.dev/api/admin-graphql" external>
-                      Shopify Admin API
-                    </Link>
-                    , and{" "}
-                    <Link
-                      url="https://shopify.dev/apps/tools/app-bridge"
-                      external
-                    >
-                      App Bridge
-                    </Link>{" "}
-                    UI library and components.
                   </p>
-                  <p>
-                    Ready to go? Start populating your app with some sample
-                    products to view and test in your store.{" "}
-                  </p>
-                  <p>
-                    Learn more about building out your app in{" "}
-                    <Link
-                      url="https://shopify.dev/apps/getting-started/add-functionality"
-                      external
-                    >
-                      this Shopify tutorial
-                    </Link>{" "}
-                    📚{" "} */}
-
-
-
-                  </p>
-                  <button></button>
+                  <Button 
+                    onClick = {() => navigate("/fabrics/fabric-table")}>
+                    Click here to view fabric database
+                  </Button>
                   <li>Add new fabrics</li>
                   <li>Upload pictures for each sample</li>
                   <li>Organize by color and material tags</li>
@@ -73,6 +33,7 @@ export default function HomePage() {
                   <li>Delete entries that are no longer available</li>
                   <li>Hide entries without deleting them</li>
                   <li>Automatically updates fabric list within Fabric Options Popup section</li>
+                  <li>Modify and delete tags</li>
                 </TextContainer>
               </Stack.Item>
             </Stack>
@@ -93,6 +54,7 @@ export default function HomePage() {
                 <TextContainer spacing="loose">
                   <Heading>Additional Details</Heading>
                   <li>Make sure tags are all typed exactly the same</li>
+                  <li>Only one image allowed per entry</li>
                   <li>Notes are not viewable to the customer</li>
                 </TextContainer>
               </Stack.Item>

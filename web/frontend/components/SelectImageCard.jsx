@@ -1,9 +1,9 @@
-import { DropZone, Stack, Thumbnail, Caption, Banner, List, Card, MediaCard } from "@shopify/polaris";
+import { DropZone, Stack, Banner, List, Card, MediaCard } from "@shopify/polaris";
 import { NoteMinor } from "@shopify/polaris-icons";
 import { useState, useCallback } from "react";
 
-function ImageDrop() {
-  const [file, setFile] = useState();
+function ImageDrop( props ) {
+  const [file, setFile] = useState(props.file);
   const [rejectedFiles, setRejectedFiles] = useState([]);
   const hasError = rejectedFiles.length > 0;
 
@@ -37,6 +37,7 @@ function ImageDrop() {
             : NoteMinor
         }
       />
+      {console.log(file)}
     </MediaCard>
   );
 
@@ -69,10 +70,11 @@ function ImageDrop() {
 export class SelectImageCard extends React.Component {
   render() {
     const cardTitle = this.props.CardTitle;
+    const file = this.props.Content;
 
     return(
       <Card title={cardTitle} sectioned>
-        <ImageDrop></ImageDrop>
+        <ImageDrop file={file}></ImageDrop>
       </Card>
     );
   }

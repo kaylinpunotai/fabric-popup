@@ -1,46 +1,121 @@
 import { useState, useCallback } from "react";
 import {
-  Banner,
   Card,
   Form,
   FormLayout,
-  TextField,
   Button,
-  ChoiceList,
-  Select,
-  Thumbnail,
-  Icon,
   Stack,
-  TextStyle,
-  Layout,
-  EmptyState,
   Checkbox,
 } from "@shopify/polaris";
 import {
-  ContextualSaveBar,
-  ResourcePicker,
   useAppBridge,
   useNavigate,
-  TitleBar,
 } from "@shopify/app-bridge-react";
-import { ImageMajor, AlertMinor } from "@shopify/polaris-icons";
-
-/* Import the useAuthenticatedFetch hook included in the Node app template */
 import { useAuthenticatedFetch, useAppQuery } from "../hooks";
-
-/* Import custom hooks for forms */
 import { useForm, useField, notEmptyString } from "@shopify/react-form";
-
-// Import image drop card
 import { SelectImageCard } from "./SelectImageCard";
-
-// Import tag selection card
 import { SelectTagCard } from "./SelectTagCard";
-
-// Import single/multiline text input card
 import { TextInputCard } from "./TextInputCard";
 
+// Toggle active/hidden status
+function HiddenCheckbox( props ) {
+  // Check existing status and convert to boolean
+  var existingState = props.State == "Hidden" ? true : false;
+  const [checked, setChecked] = useState(existingState);
+  const handleChange = useCallback((newChecked) => setChecked(newChecked), []);
+  
+  return(
+    <Card sectioned>
+      <Checkbox label="Hide entry" checked={checked} onChange={handleChange}/>
+    </Card>
+  );
+}
 
-export function FabricForm() {
-  <div>test</div>
+
+export function FabricForm ({ Entry: InitialEntry }) {
+  const [Entry, setProps] = useState(InitialEntry);
+  const navigate = useNavigate();
+  const appBridge = useAppBridge();
+  const fetch = useAuthenticatedFetch();
+
+  // Function to save entry
+  const onSubmit = (body) => console.log("submit", body);
+
+  // Function to delete entry
+  const isDeleting = false;
+  const deleteEntry = () => console.log("delete");
+
+  // Entry values when you click Save
+  const {
+    fields: {
+      title,
+      image,
+      material,
+      color,
+      status,
+      notes,
+    },
+    dirty,
+    reset,
+    submit,
+    makeClean,
+  } = useForm({
+    fields: {
+      title: useField({
+        value: Entry?.title || "",
+        validates: [notEmptyString("Name required")],
+      }),
+      image: useField({
+        value: Entry?.imageSrc || "",
+      }),
+      material: useField({
+        value: Entry?.material || [],
+      }),
+      color: useField({
+        value: Entry?.color || [],
+      }),
+      status: useField({
+        value: Entry?.status || "Hidden",
+      }),
+      notes: useField({
+        value: Entry?.notes || "",
+      }),
+    },
+    onSubmit,
+  });
+
+
+  return (
+    <Form>
+      <FormLayout>
+        <TextInputCard 
+          CardTitle="Name" 
+          Caption="Visible to customers" 
+          MultiLine="false"
+          Content={Entry ? Entry.title : ""}
+        />
+        <SelectImageCard 
+          CardTitle="Upload Image"
+          Content={Entry ? Entry.image : ""}
+        />
+        <SelectTagCard 
+          TagType="Material"
+          Content={Entry ? Entry.material : []}
+        />
+        <SelectTagCard 
+          TagType="Color"
+          Content={Entry ? Entry.color : []}
+        />
+        <HiddenCheckbox 
+          State={Entry ? Entry.status : false} 
+        />
+        <TextInputCard 
+          CardTitle="Notes" 
+          Caption="Only visible to you" 
+          MultiLine="true"
+          Content={Entry ? Entry.notes : ""}
+        />
+      </FormLayout>
+    </Form>
+  );
 }

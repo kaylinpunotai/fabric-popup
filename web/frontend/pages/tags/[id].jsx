@@ -4,14 +4,25 @@ import { useState, useCallback } from "react";
 import { TagForm } from "../../components/TagForm";
 
 
-export default function NewTag() {
+export default function EditTag() {
+  const debug = true;
   const navigate = useNavigate();
   const breadcrumbs = [{ content: "Tag Data Table", url: "/tags/tag-table" }];
+  var tag = null;
+
+  if (debug) {
+    // Mock values for testing
+    tag = {
+      name: "test title",
+      category: "Material",
+      notes: "notes test",
+    };
+  }
 
   return (
     <Page narrowWidth>
       <TitleBar
-        title="New Tag"
+        title="Edit Tag"
         breadcrumbs={breadcrumbs}
         primaryAction={{
           content: "Save",
@@ -24,7 +35,7 @@ export default function NewTag() {
           },
         ]}
       />
-      <TagForm/>
+      <TagForm Tag={tag} />
     </Page>
   );
 }

@@ -6,7 +6,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   return (
     <Page narrowWidth>
-      <TitleBar title="Fabric Options Editor App" primaryAction={null}/>
+      <TitleBar title="App Home" primaryAction={null}/>
       <Layout>
         <Layout.Section>
           <Card sectioned>

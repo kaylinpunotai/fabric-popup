@@ -6,13 +6,15 @@ import { useState, useCallback } from "react";
 // str caption = subtitle under header
 // int lines = number of lines for textbox
 function MultilineField( props ) {
-  const [value, setValue] = useState("");
+  const existingText = props.content;
+
+  const [value, setValue] = useState(existingText);
 
   const handleChange = useCallback((newValue) => setValue(newValue), []);
 
   return (
     <TextField
-      label={props.caption}
+      helpText={props.caption}
       value={value}
       onChange={handleChange}
       multiline={props.lines}
@@ -26,6 +28,7 @@ export class TextInputCard extends React.Component {
     const cardTitle = this.props.CardTitle;
     const caption = this.props.Caption;
     const multi = this.props.MultiLine;
+    const content = this.props.Content;
     var lines = 1;
 
     if (multi == "true") {
@@ -34,7 +37,7 @@ export class TextInputCard extends React.Component {
 
     return(
       <Card title={cardTitle} sectioned>
-        <MultilineField caption={caption} lines={lines}></MultilineField>
+        <MultilineField caption={caption} lines={lines} content={content}></MultilineField>
       </Card>
     );
   }

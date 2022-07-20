@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 // props 
 // TagType = "Material" or "Color"
 function SelectTag( props ) {
-  const [selectedTags, setSelectedTags] = useState("");
+  const [selectedTags, setSelectedTags] = useState(props.ExistingTags);
   const [value, setValue] = useState("");
   const [suggestion, setSuggestion] = useState("");
 
@@ -151,10 +151,11 @@ export class SelectTagCard extends React.Component {
 
   render() {
     const tagType = this.props.TagType;
+    const existingTags = this.props.Content;
 
     return(
       <Card title={tagType + " Tags"} sectioned>
-        <SelectTag TagType={tagType}></SelectTag>
+        <SelectTag TagType={tagType} ExistingTags={existingTags}></SelectTag>
       </Card>
     );
   }

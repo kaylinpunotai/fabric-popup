@@ -1,29 +1,18 @@
-import { Card, Page, Layout, Checkbox } from "@shopify/polaris";
+import { Card, Page, Layout } from "@shopify/polaris";
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
-import { SelectImageCard } from "../../components/SelectImageCard";
-import { SelectTagCard } from "../../components/SelectTagCard";
-import { TextInputCard } from "../../components/TextInputCard";
 import { useState, useCallback } from "react";
+import { FabricForm } from "../../components/FabricForm";
 
-// Toggle active/hidden status
-function HiddenCheckbox() {
-  const [checked, setChecked] = useState(false);
-  const handleChange = useCallback((newChecked) => setChecked(newChecked), []);
-  
-  return(
-    <Card sectioned>
-      <Checkbox label="Hide entry" checked={checked} onChange={handleChange}/>
-    </Card>
-  );
-}
 
 export default function NewFabric() {
   const navigate = useNavigate();
+  const breadcrumbs = [{ content: "Fabric Data Table", url: "/fabrics/fabric-table" }];
 
   return (
     <Page narrowWidth>
       <TitleBar
         title="New Entry"
+        breadcrumbs={breadcrumbs}
         primaryAction={{
           content: "Save",
           onAction: () => console.log("saving fabric"),
@@ -35,16 +24,7 @@ export default function NewFabric() {
           },
         ]}
       />
-      <Layout>
-        <Layout.Section>
-          <TextInputCard CardTitle="Name" Caption="Try to keep succinct. This will be present in the fabric selection dropdown menus." MultiLine="false"/>
-          <SelectImageCard CardTitle="Upload Image"/>
-          <SelectTagCard TagType="Material"/>
-          <SelectTagCard TagType="Color"/>
-          <HiddenCheckbox/>
-          <TextInputCard CardTitle="Notes" Caption="Anything written here will only be visible to you" MultiLine="true"/>
-        </Layout.Section>
-      </Layout>
+      <FabricForm/>
     </Page>
   );
 }

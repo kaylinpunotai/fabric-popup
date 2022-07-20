@@ -1,7 +1,10 @@
 export { EmptyListCard } from './EmptyListCard';
 export { FabricForm } from "./FabricForm";
+export { FabricIndex } from "./FabricIndex";
 export { SelectImageCard } from "./SelectImageCard";
 export { SelectTagCard } from "./SelectTagCard";
 export { StatsCard } from "./StatsCard";
+export { TagForm } from "./TagForm";
+export { TagIndex } from "./TagIndex";
 export { TextInputCard } from "./TextInputCard";
 export * from "./providers";

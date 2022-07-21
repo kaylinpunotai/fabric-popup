@@ -18,11 +18,15 @@ export function TagIndex(props) {
   const debug = true;
   const navigate = useNavigate();
 
-  ///// FILTERS ///// Category
+  ///// FILTERS ///// Category, Notes
   // Default values
   var categoryChoices = [
     { label: "Color", value: "Color" },
     { label: "Material", value: "Material" }
+  ]
+  var notesChoices = [
+    { label: "Notes", value: "Notes" },
+    { label: "No Notes", value: "No Notes" }
   ]
 
   // Mock values for testing
@@ -30,17 +34,25 @@ export function TagIndex(props) {
   }
 
   const [category, setCategory] = useState();
+  const [notes, setNotes] = useState();
 
   const handleCategoryChange = useCallback(
     (value) => setCategory(value),
     []
   );
+  const handleNotesChange = useCallback(
+    (value) => setNotes(value),
+    []
+  );
 
   const handleCategoryRemove = useCallback(() => setCategory(null), []);
+  const handleNotesRemove = useCallback(() => setNotes(null), []);
   const handleFiltersClearAll = useCallback(() => {
     handleCategoryRemove();
+    handleNotesRemove();
     }, [
       handleCategoryRemove,
+      handleNotesRemove,
     ]
   );
 
@@ -60,6 +72,21 @@ export function TagIndex(props) {
       ),
       shortcut: true,
     },
+    {
+      key: "notes",
+      label: "Notes",
+      filter: (
+        <ChoiceList 
+          title="Notes"
+          titleHidden
+          choices={notesChoices}
+          selected={notes || []}
+          onChange={handleNotesChange}
+          allowMultiple
+        />
+      ),
+      shortcut: true,
+    },
   ];
 
   const appliedFilters = [];
@@ -67,8 +94,21 @@ export function TagIndex(props) {
     const key = "category";
     appliedFilters.push({
       key,
+      value: category,
       label: category.join(", "),
       onRemove: handleCategoryRemove,
+    });
+  }
+  if (notes?.length) {
+    const key = "notes";
+    var notesValue = [];
+    if (notes.includes("Notes")) {notesValue.push(true)}
+    if (notes.includes("No Notes")) {notesValue.push(false)}
+    appliedFilters.push({
+      key,
+      value: notesValue,
+      label: notes.join(", "),
+      onRemove: handleNotesRemove,
     });
   }
   
@@ -85,35 +125,61 @@ export function TagIndex(props) {
   // Map entry and organize data into row cells. Each entry gets its own index page
   const rowMarkup = props.tags.map(
     ({ name, category, assignments, notes, actions }, index) => {
+      var show = true;
 
-      return (
-        <IndexTable.Row
-          id={index}
-          key={index}
-          position={index}
-          onClick={() => {
-            navigate(`/tags/${index}`);
-          }}
-        >
-          <IndexTable.Cell classname="nameCol">
-            <UnstyledLink data-primary-link url={`/tags/${index}`}>
-              {truncate(name, 25)}
-            </UnstyledLink>
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="categoryCol">
-            {category}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="assignmentsCol">
-            {assignments}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="notesCol">
-            {truncate(notes, 25)}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="actionsCol">
-            {actions}
-          </IndexTable.Cell>
-        </IndexTable.Row>
-      );
+      // Check against filters. Only return row if values match filters.
+      for (let filter in appliedFilters) {
+        var key = appliedFilters[filter]["key"];
+        var value = appliedFilters[filter]["value"];
+        if (key == "category") {
+          if (!value.includes(category)) {
+            show = false;
+            break;
+          }
+        }
+        else if (key == "notes") {
+          var noteExists = true;
+          if (notes.length == 0) {
+            noteExists = false;
+          }
+          if (!value.includes(noteExists)) {
+            show = false;
+            break;
+          }
+        }
+      }
+
+      if (show) {
+        return (
+          <IndexTable.Row
+            id={index}
+            key={index}
+            position={index}
+            onClick={() => {
+              navigate(`/tags/${index}`);
+            }}
+          >
+            <IndexTable.Cell classname="nameCol">
+              <UnstyledLink data-primary-link url={`/tags/${index}`}>
+                {truncate(name, 25)}
+              </UnstyledLink>
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="categoryCol">
+              {category}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="assignmentsCol">
+              {assignments}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="notesCol">
+              {truncate(notes, 25)}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="actionsCol">
+              {actions}
+            </IndexTable.Cell>
+          </IndexTable.Row>
+        );
+      }
+    else { return null; }
     }
   );
 

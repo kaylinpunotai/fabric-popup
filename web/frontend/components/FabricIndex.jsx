@@ -25,13 +25,17 @@ export function FabricIndex(props) {
   const debug = true;
   const navigate = useNavigate();
 
-  ///// FILTERS ///// Material, Color, Status
+  ///// FILTERS ///// Material, Color, Status, Notes
   // Default values
   var materialChoices = [];
   var colorChoices = [];
   var statusChoices = [
     { label: "Active", value: "Active" },
     { label: "Hidden", value: "Hidden" }
+  ]
+  var notesChoices = [
+    { label: "Notes", value: "Notes" },
+    { label: "No Notes", value: "No Notes" }
   ]
 
   // Mock values for testing
@@ -49,6 +53,7 @@ export function FabricIndex(props) {
   const [material, setMaterial] = useState();
   const [color, setColor] = useState();
   const [status, setStatus] = useState();
+  const [notes, setNotes] = useState();
 
   const handleMaterialChange = useCallback(
     (value) => setMaterial(value),
@@ -62,18 +67,25 @@ export function FabricIndex(props) {
     (value) => setStatus(value),
     []
   );
+  const handleNotesChange = useCallback(
+    (value) => setNotes(value),
+    []
+  );
 
   const handleMaterialRemove = useCallback(() => setMaterial(null), []);
   const handleColorRemove = useCallback(() => setColor(null), []);
   const handleStatusRemove = useCallback(() => setStatus(null), []);
+  const handleNotesRemove = useCallback(() => setNotes(null), []);
   const handleFiltersClearAll = useCallback(() => {
     handleMaterialRemove();
     handleColorRemove();
     handleStatusRemove();
+    handleNotesRemove();
     }, [
       handleMaterialRemove,
       handleColorRemove,
       handleStatusRemove,
+      handleNotesRemove,
     ]
   );
 
@@ -123,6 +135,21 @@ export function FabricIndex(props) {
       ),
       shortcut: true,
     },
+    {
+      key: "notes",
+      label: "Notes",
+      filter: (
+        <ChoiceList 
+          title="Notes"
+          titleHidden
+          choices={notesChoices}
+          selected={notes || []}
+          onChange={handleNotesChange}
+          allowMultiple
+        />
+      ),
+      shortcut: true,
+    },
   ];
 
   const appliedFilters = [];
@@ -130,6 +157,7 @@ export function FabricIndex(props) {
     const key = "material";
     appliedFilters.push({
       key,
+      value: material,
       label: material.join(", "),
       onRemove: handleMaterialRemove,
     });
@@ -138,6 +166,7 @@ export function FabricIndex(props) {
     const key = "color";
     appliedFilters.push({
       key,
+      value: color,
       label: color.join(", "),
       onRemove: handleColorRemove,
     });
@@ -146,8 +175,21 @@ export function FabricIndex(props) {
     const key = "status";
     appliedFilters.push({
       key,
+      value: status,
       label: status.join(", "),
       onRemove: handleStatusRemove,
+    });
+  }
+  if (notes?.length) {
+    const key = "notes";
+    var notesValue = [];
+    if (notes.includes("Notes")) {notesValue.push(true)}
+    if (notes.includes("No Notes")) {notesValue.push(false)}
+    appliedFilters.push({
+      key,
+      value: notesValue,
+      label: notes.join(", "),
+      onRemove: handleNotesRemove,
     });
   }
   
@@ -164,50 +206,88 @@ export function FabricIndex(props) {
   // Map entry and organize data into row cells. Each entry gets its own index page
   const rowMarkup = props.entries.map(
     ({ image, name, material, color, status, notes, actions }, index) => {
+      var show = true;
 
-      return (
-        <IndexTable.Row
-          id={index}
-          key={index}
-          position={index}
-          onClick={() => {
-            navigate(`/fabrics/${index}`);
-          }}
-        >
-          <IndexTable.Cell classname="imageCol">
-            <Thumbnail
-              source={image?.url || ImageMajor}
-              alt="placeholder"
-              color="base"
-              size="small"
-            />
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="nameCol">
-            <UnstyledLink data-primary-link url={`/fabrics/${index}`}>
-              {truncate(name, 25)}
-            </UnstyledLink>
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="materialCol">
-            {Array.from(material).join(", ")}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="colorCol">
-            {Array.from(color).join(", ")}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="statusCol">
-            {status == "Active" ? (
-              <TextStyle variation="positive">{status}</TextStyle>
-            ) : (
-              <TextStyle variation="negative">{status}</TextStyle>
-            )}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="notesCol">
-            {truncate(notes, 25)}
-          </IndexTable.Cell>
-          <IndexTable.Cell classname="actionsCol">
-            {actions}
-          </IndexTable.Cell>
-        </IndexTable.Row>
-      );
+      // Check against filters. Only return row if values match filters.
+      for (let filter in appliedFilters) {
+        var key = appliedFilters[filter]["key"];
+        var value = appliedFilters[filter]["value"];
+        if (key == "material") {
+          if (!material.some(i => value.includes(i))) {
+            show = false;
+            break;
+          }
+        }
+        else if (key == "color") {
+          if (!color.some(i => value.includes(i))) {
+            show = false;
+            break;
+          }
+        }
+        else if (key == "status") {
+          if (!value.includes(status)) {
+            show = false;
+            break;
+          }
+        }
+        else if (key == "notes") {
+          var noteExists = true;
+          if (notes.length == 0) {
+            noteExists = false;
+          }
+          if (!value.includes(noteExists)) {
+            show = false;
+            break;
+          }
+        }
+      }
+
+      if (show) {
+        return (
+          <IndexTable.Row
+            id={index}
+            key={index}
+            position={index}
+            onClick={() => {
+              navigate(`/fabrics/${index}`);
+            }}
+          >
+            <IndexTable.Cell classname="imageCol">
+              <Thumbnail
+                source={image?.url || ImageMajor}
+                alt="placeholder"
+                color="base"
+                size="small"
+              />
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="nameCol">
+              <UnstyledLink data-primary-link url={`/fabrics/${index}`}>
+                {truncate(name, 25)}
+              </UnstyledLink>
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="materialCol">
+              {Array.from(material).join(", ")}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="colorCol">
+              {Array.from(color).join(", ")}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="statusCol">
+              {status == "Active" ? (
+                <TextStyle variation="positive">{status}</TextStyle>
+              ) : (
+                <TextStyle variation="negative">{status}</TextStyle>
+              )}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="notesCol">
+              {truncate(notes, 25)}
+            </IndexTable.Cell>
+            <IndexTable.Cell classname="actionsCol">
+              {actions}
+            </IndexTable.Cell>
+          </IndexTable.Row>
+        );
+      }
+      else { return null; }
     }
   );
 

@@ -4,7 +4,7 @@ build:
   config:
     SHOPIFY_API_KEY: 2f99200ced7270ebbb09324c3e6abab4
     SHOPIFY_API_SECRET: e0dbcebe2ce6a97bcfcde6e5e4bf0d3f
-    SCOPES: [read_products, write_products, read_files, write_files, read_product_listings, read_themes, write_themes]
+    SCOPES: read_products
     HOST: fabric-popup.herokuapp.com
     RAILS_MASTER_KEY: da2c50973a06743e3e319d8a2ca43e33
     RAILS_ENV: production

@@ -1,0 +1,2 @@
+module FabricEntriesHelper
+end

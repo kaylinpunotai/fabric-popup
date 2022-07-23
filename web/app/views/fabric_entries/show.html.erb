@@ -1,0 +1,31 @@
+<p>
+  <strong>ID:</strong>
+  <%= @fabric_entry.id %>
+</p>
+<p>
+  <strong>Image:</strong>
+  <%= @fabric_entry.image %>
+</p>
+<p>
+  <strong>Title:</strong>
+  <%= @fabric_entry.title %>
+</p>
+<p>
+  <strong>Material:</strong>
+  <%= @fabric_entry.material %>
+</p>
+<p>
+  <strong>Color:</strong>
+  <%= @fabric_entry.color %>
+</p>
+<p>
+<strong>Status:</strong>
+<%= @fabric_entry.status %>
+</p>
+<p>
+  <strong>Notes:</strong>
+  <%= @fabric_entry.notes %>
+</p>
+
+<%= link_to 'Edit', edit_fabric_entry_path(@fabric_entry) %> |
+<%= link_to 'Back', fabric_entries_path%>

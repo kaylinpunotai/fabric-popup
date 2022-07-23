@@ -1,0 +1,2 @@
+class TagEntry < ApplicationRecord
+end

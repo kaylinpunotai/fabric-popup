@@ -1,0 +1,21 @@
+<%= form_for @tag_entry do |form| %>
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.label :category %><br>
+    <%= form.radio_button(:category, "Color") %>
+    <%= form.label :category, "Color" %><br>
+    <%= form.radio_button(:category, "Material") %>
+    <%= form.label :category, "Material" %>
+  </p>
+  <p>
+    <%= form.label :notes %><br>
+    <%= form.text_area :notes %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

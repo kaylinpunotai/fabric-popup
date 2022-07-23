@@ -22,16 +22,5 @@ module ShopifyAppTemplateRuby
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    # ShopifyAPI::Context.setup(
-    #   api_key: "<api-key>",
-    #   api_secret_key: "<api-secret-key>",
-    #   host_name: "<application-host-name>",
-    #   scope: "read_orders,read_products,etc",
-    #   session_storage: ShopifyAPI::Auth::FileSessionStorage.new, # This is only to be used for testing, more information in session docs
-    #   is_embedded: true, # Set to true if you are building an embedded app
-    #   is_private: false, # Set to true if you are building a private app
-    #   api_version: "2021-01" # The vesion of the API you would like to use
-    # )
   end
 end

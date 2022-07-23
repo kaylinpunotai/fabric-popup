@@ -1,0 +1,33 @@
+<%= form_for @fabric_entry do |form| %>
+  <p>
+    <%= form.label :image %><br>
+    <%= form.file_field :image %>
+  </p>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+  <p>
+    <%= form.label :material %><br>
+    <%= form.collection_check_boxes :material, @materials, :name, :name, include_hidden: false %>
+  </p>
+  <p>
+    <%= form.label :color %><br>
+    <%= form.collection_check_boxes :color, @colors, :name, :name, include_hidden: false %>
+  </p>
+  <p>
+    <%= form.label :status %><br>
+    <%= form.radio_button(:status, "Active") %>
+    <%= form.label :status, "Active" %><br>
+    <%= form.radio_button(:status, "Hidden") %>
+    <%= form.label :status, "Hidden" %>
+  </p>
+  <p>
+    <%= form.label :notes %><br>
+    <%= form.text_area :notes %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

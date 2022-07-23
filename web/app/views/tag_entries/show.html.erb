@@ -1,0 +1,23 @@
+<p>
+  <strong>ID:</strong>
+  <%= @tag_entry.id %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @tag_entry.name %>
+</p>
+<p>
+  <strong>Category:</strong>
+  <%= @tag_entry.category %>
+</p>
+<p>
+<strong>Assignments:</strong>
+<%= @tag_entry.assignments %>
+</p>
+<p>
+  <strong>Notes:</strong>
+  <%= @tag_entry.notes %>
+</p>
+
+<%= link_to 'Edit', edit_tag_entry_path(@tag_entry) %> |
+<%= link_to 'Back', fabric_entries_path%>

@@ -1,0 +1,27 @@
+<h1>Listing tag entries</h1>
+
+<%= link_to 'New tag entry', new_tag_entry_path %>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Assignments</th>
+    <th>Notes</th>
+    <th colspan="3"></th>
+  </tr>
+
+  <% @tag_entries.each do |tag_entry| %>
+    <tr>
+      <td><%= tag_entry.id %></td>
+      <td><%= tag_entry.name %></td>
+      <td><%= tag_entry.category %></td>
+      <td><%= tag_entry.assignments %></td>
+      <td><%= tag_entry.notes %></td>
+      <td><%= link_to 'Show', tag_entry_path(tag_entry) %></td>
+      <td><%= link_to 'Edit', edit_tag_entry_path(tag_entry) %></td>
+      <td><%= button_to 'Delete', tag_entry_path(tag_entry), method: :delete %></td>
+    </tr>
+  <% end %>
+</table>

@@ -1,10 +1,13 @@
 class TagEntriesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def index
     @tag_entries = TagEntry.all
+    render json: @tag_entries
   end
 
   def show
     @tag_entry = TagEntry.find(params[:id])
+    render json: @tag_entry
   end
 
   def new
@@ -16,34 +19,26 @@ class TagEntriesController < ApplicationController
   end
 
   def create
-    @tag_entry = TagEntry.new(tag_entry_params)
-
-    if @tag_entry.save
-      redirect_to @tag_entry
-    else
-      render 'new'
-    end
+    @tag_entry = TagEntry.create(tag_entry_params)
   end
 
   def update
     @tag_entry = TagEntry.find(params[:id])
-
-    if @tag_entry.update(tag_entry_params)
-      redirect_to @tag_entry
-    else
-      render 'edit'
-    end
+    @tag_entry.update(tag_entry_params)
   end
 
   def destroy
     @tag_entry = TagEntry.find(params[:id])
     @tag_entry.destroy
+  end
 
-    redirect_to fabric_entries_path
+  def sort 
+    @sorted = TagEntry.order(params[:column])
+    render json: @sorted
   end
 
   private
     def tag_entry_params
-      params.require(:tag_entry).permit(:name, :category, :assignments, :notes)
+      params.required(:tag_entry).permit(:name, :category, :assignments, :notes, :id)
     end
 end

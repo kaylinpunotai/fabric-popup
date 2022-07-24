@@ -33,17 +33,45 @@ function HiddenCheckbox( props ) {
 
 
 export function FabricForm ({ Entry: InitialEntry }) {
-  const [Entry, setProps] = useState(InitialEntry);
+  const [Entry, setEntry] = useState(InitialEntry);
   const navigate = useNavigate();
   const appBridge = useAppBridge();
   const fetch = useAuthenticatedFetch();
 
   // Function to save entry
-  const onSubmit = (body) => console.log("submit", body);
+  // const onSubmit = (body) => console.log("submit", body);
+  // const onSubmit = useCallback(
+  //   (body) => {
+  //     (async () => {
+  //       const parsedBody = body;
+  //       parsedBody.destination = parsedBody.destination[0];
+  //       const entryId = Entry?.id;
+  //       const url = entryId ? '/api/fabric_entries/${entryId}' : "/api/fabric_entries";
+  //       const method = entryId ? "PATCH" : "POST";
+  //       const response = await fetch(url, {
+  //         method,
+  //         body: JSON.stringify(parsedBody),
+  //         headers: { "Content-Type": "application/json" },
+  //       });
+  //       if (response.ok) {
+  //         makeClean();
+  //         const Entry = await response.json();
+  //         if (!entryId) {
+  //           navigate('/fabrics/${Entry.id}');
+  //         } else {
+  //           setEntry(Entry);
+  //         }
+  //       }
+  //     })();
+  //     return { pageStatus: "success" }
+  //   },
+  //   [Entry, setEntry]
+  // );
 
   // Function to delete entry
-  const isDeleting = false;
-  const deleteEntry = () => console.log("delete");
+  // const isDeleting = false;
+  // const deleteEntry = () => console.log("delete");
+
 
   // Entry values when you click Save
   const {

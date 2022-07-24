@@ -6,8 +6,10 @@ import {
   Filters,
   Select,
   ChoiceList,
+  Button
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
+import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 // Function to truncate long strings
 function truncate(str, n) {
@@ -17,6 +19,8 @@ function truncate(str, n) {
 export function TagIndex(props) {
   const debug = true;
   const navigate = useNavigate();
+  const fetch = useAuthenticatedFetch();
+  let tags = props.tags;
 
   ///// FILTERS ///// Category, Notes
   // Default values
@@ -28,10 +32,6 @@ export function TagIndex(props) {
     { label: "Notes", value: "Notes" },
     { label: "No Notes", value: "No Notes" }
   ]
-
-  // Mock values for testing
-  if (debug) {
-  }
 
   const [category, setCategory] = useState();
   const [notes, setNotes] = useState();
@@ -120,11 +120,31 @@ export function TagIndex(props) {
     { label: "Assignments", value: "assignments" },
   ];
   const [sortValue, setSortValue] = useState("name");
-  const handleSortChange = useCallback((value) => setSortValue(value), []);
+  const handleSortChange = useCallback(
+    (sortBy) => {
+      (async () => {
+        const parseSort = {"column": sortBy};
+        const url = "/api/tag_entries/sort";
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(parseSort),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+          tags = await response.json();
+          rowMarkup;
+          console.log(tags);
+        }
+      }) ();
+      setSortValue(sortBy);
+      return { status: "success" };
+    },
+    []
+  );
 
   // Map entry and organize data into row cells. Each entry gets its own index page
-  const rowMarkup = props.tags.map(
-    ({ name, category, assignments, notes, actions }, index) => {
+  let rowMarkup = tags.map(
+    ({ name, category, assignments, notes, id }, index) => {
       var show = true;
 
       // Check against filters. Only return row if values match filters.
@@ -149,6 +169,18 @@ export function TagIndex(props) {
         }
       }
 
+      const handleDelete = useCallback(
+        async () => {
+          const response = await fetch(`/api/tag_entries/delete/${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.ok) {
+            navigate(`/tags/tag-table`);
+          }
+        }, []
+      );
+
       if (show) {
         return (
           <IndexTable.Row
@@ -156,11 +188,11 @@ export function TagIndex(props) {
             key={index}
             position={index}
             onClick={() => {
-              navigate(`/tags/${index}`);
+              navigate(`/tags/${id}`);
             }}
           >
             <IndexTable.Cell classname="nameCol">
-              <UnstyledLink data-primary-link url={`/tags/${index}`}>
+              <UnstyledLink data-primary-link url={`/tags/${id}`}>
                 {truncate(name, 25)}
               </UnstyledLink>
             </IndexTable.Cell>
@@ -174,7 +206,9 @@ export function TagIndex(props) {
               {truncate(notes, 25)}
             </IndexTable.Cell>
             <IndexTable.Cell classname="actionsCol">
-              {actions}
+              <Button onClick={handleDelete}>
+                Delete
+              </Button>
             </IndexTable.Cell>
           </IndexTable.Row>
         );
@@ -206,7 +240,7 @@ export function TagIndex(props) {
         </div>
       </div>
       <IndexTable
-        itemCount={props.tags.length}
+        itemCount={tags.length}
         headings={[
           { title: "Name" },
           { title: "Category" },

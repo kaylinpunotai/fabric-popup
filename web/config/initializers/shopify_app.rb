@@ -35,8 +35,12 @@ ShopifyApp.configure do |config|
   #   currency_code: "USD", # Only supports USD for now
   # )
 
-  config.api_key = 'ENV.fetch("SHOPIFY_API_KEY", "").presence'
-  config.secret = 'ENV.fetch("SHOPIFY_API_SECRET", "").presence'
+  config.api_key = ENV.fetch("SHOPIFY_API_KEY", "").presence
+  config.secret = ENV.fetch("SHOPIFY_API_SECRET", "").presence
+
+  ## For backend testing
+  # config.api_key = 'ENV.fetch("SHOPIFY_API_KEY", "").presence'
+  # config.secret = 'ENV.fetch("SHOPIFY_API_SECRET", "").presence'
 
   if defined? Rails::Server
     raise("Missing SHOPIFY_API_KEY. See https://github.com/Shopify/shopify_app#requirements") unless config.api_key

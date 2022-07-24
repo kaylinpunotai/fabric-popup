@@ -16,7 +16,7 @@ export function StatsCard() {
   const fetch = useAuthenticatedFetch();
 
   const {
-    data,
+    data: products,
     refetch: refetchProductCount,
     isLoading: isLoadingCount,
     isRefetching: isRefetchingCount,
@@ -28,6 +28,21 @@ export function StatsCard() {
       },
     },
   });
+
+  const {
+    data: colors,
+    refetch: refetchColors,
+    isLoading: isLoadingColors,
+    isRefetching: isRefetchingColors,
+  } = useAppQuery({
+    url: "/api/tag_entries/index",
+    reactQueryOptions: {
+      onSuccess: () => {
+        setIsLoading(false);
+      },
+    },
+  });
+
 
   const toastMarkup = toastProps.content && !isRefetchingCount && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
@@ -66,7 +81,7 @@ export function StatsCard() {
             TOTAL FABRICS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
+                {isLoadingCount ? "-" : products.count}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -74,7 +89,6 @@ export function StatsCard() {
             ACTIVE FABRICS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -82,7 +96,6 @@ export function StatsCard() {
             HIDDEN FABRICS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -90,7 +103,7 @@ export function StatsCard() {
             TOTAL COLORS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
+                {isLoadingColors ? "-" : colors.length}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -98,7 +111,6 @@ export function StatsCard() {
             TOTAL MATERIALS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
               </TextStyle>
             </DisplayText>
           </Heading>

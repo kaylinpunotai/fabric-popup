@@ -1,6 +1,7 @@
 export { EmptyListCard } from './EmptyListCard';
 export { FabricForm } from "./FabricForm";
 export { FabricIndex } from "./FabricIndex";
+export { LoadingCard } from "./LoadingCard";
 export { SelectImageCard } from "./SelectImageCard";
 export { SelectTagCard } from "./SelectTagCard";
 export { StatsCard } from "./StatsCard";

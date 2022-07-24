@@ -1,14 +1,22 @@
-import { Card, Page, Layout, TextContainer, Heading } from "@shopify/polaris";
+import { Card, Page, Layout, TextContainer, Heading, SkeletonBodyText } from "@shopify/polaris";
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
+import { LoadingCard } from "../../components/LoadingCard";
 import { EmptyListCard } from "../../components/EmptyListCard";
 import { TagIndex } from "../../components";
+import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import { useState } from "react";
+
 
 export default function TagTable() {
-  const debug = true;
+  const debug = false;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const fetch = useAuthenticatedFetch();
 
-  // Entry order: {Name, Category, Assignments, Notes, Actions},
-  var tagList = []
+  let refetchTags;
+  let loadingTags;
+  let isRefetchingTags = false;
+  let tagList = [];
   if (debug) {
     // Mock tags for testing
     tagList = [
@@ -34,15 +42,35 @@ export default function TagTable() {
         actions: "",
       },
     ]
+    setIsLoading(false);
+  }
+  else {
+    ({ data: tagList,
+      refetch: refetchTags,
+      isLoading: loadingTags,
+      isRefetching: isRefetchingTags,
+    } = useAppQuery({
+      url: "/api/tag_entries/index",
+      reactQueryOptions: {
+        onSuccess: () => {
+          setIsLoading(false);
+        },
+      },
+    }));
   }
 
+  // Show Loading card when getting data
+  const loadingMarkup = isLoading ? (
+    <LoadingCard/>
+  ) : null;
+
   // Show EmptyState card if there's no entries
-  const emptyStateMarkup = !tagList?.length ? (
+  const emptyStateMarkup = !isLoading && !tagList?.length ? (
     <EmptyListCard/>
   ) : null;
 
   // Show TagIndex if there are tags
-  const tagsMarkup = tagList?.length ? (
+  const tagsMarkup = !isLoading && tagList?.length ? (
     <TagIndex tags={tagList} />
   ) : null;
 
@@ -61,6 +89,7 @@ export default function TagTable() {
           }
         ]}
       />
+      {loadingMarkup}
       {emptyStateMarkup}
       {tagsMarkup}
     </Page>

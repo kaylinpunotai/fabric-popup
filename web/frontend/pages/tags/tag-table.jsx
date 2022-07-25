@@ -43,8 +43,7 @@ export default function TagTable() {
       },
     ]
     setIsLoading(false);
-  }
-  else {
+  } else {
     ({ data: tagList,
       refetch: refetchTags,
       isLoading: loadingTags,

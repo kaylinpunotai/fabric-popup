@@ -1,11 +1,13 @@
 class FabricEntriesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def index
     @fabric_entries = FabricEntry.all
-    @tag_entries = TagEntry.all
+    render json: @fabric_entries
   end
 
   def show
     @fabric_entry = FabricEntry.find(params[:id])
+    render json: @fabric_entry
   end
 
   def new
@@ -21,38 +23,31 @@ class FabricEntriesController < ApplicationController
   end
 
   def create
-    @fabric_entry = FabricEntry.new(fabric_entry_params)
-    @materials = TagEntry.where(:category => "Material").all
-    @colors = TagEntry.where(:category => "Color").all
-
-    if @fabric_entry.save
-      redirect_to @fabric_entry
-    else
-      render 'new'
-    end
+    @fabric_entry = FabricEntry.create(fabric_entry_params)
   end
 
   def update
     @fabric_entry = FabricEntry.find(params[:id])
-    @materials = TagEntry.where(:category => "Material").all
-    @colors = TagEntry.where(:category => "Color").all
-
-    if @fabric_entry.update(fabric_entry_params)
-      redirect_to @fabric_entry
-    else
-      render 'edit'
-    end
+    @fabric_entry.update(fabric_entry_params)
   end
 
   def destroy
     @fabric_entry = FabricEntry.find(params[:id])
     @fabric_entry.destroy
+  end
 
-    redirect_to fabric_entries_path
+  def sort 
+    @sorted = FabricEntry.order(params[:column])
+    render json: @sorted
+  end
+
+  def filter
+    @filtered = FabricEntry.where(tag_entry_params)
+    render json: @filtered
   end
 
   private
     def fabric_entry_params
-      params.require(:fabric_entry).permit(:image, :title, {:material => []}, {:color => []}, :status, :notes)
+      params.require(:fabric_entry).permit(:image, :title, {:material => []}, {:color => []}, :status, :notes, :id)
     end
 end

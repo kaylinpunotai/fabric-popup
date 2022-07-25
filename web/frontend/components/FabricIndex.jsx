@@ -15,15 +15,19 @@ import {
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { ImageMajor } from "@shopify/polaris-icons";
+import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 // Function to truncate long strings
 function truncate(str, n) {
+  if (str == null) {return}
   return str.length > n ? str.substr(0, n - 1) + "…" : str;
 }
 
 export function FabricIndex(props) {
   const debug = true;
   const navigate = useNavigate();
+  const fetch = useAuthenticatedFetch();
+  let entries = props.entries;
 
   ///// FILTERS ///// Material, Color, Status, Notes
   // Default values
@@ -202,24 +206,31 @@ export function FabricIndex(props) {
   ];
   const [sortValue, setSortValue] = useState("name");
   const handleSortChange = useCallback((value) => setSortValue(value), []);
+
+
+
+
   
   // Map entry and organize data into row cells. Each entry gets its own index page
   const rowMarkup = props.entries.map(
-    ({ image, name, material, color, status, notes, actions }, index) => {
+    ({ image, title, material, color, status, notes, actions, id }, index) => {
       var show = true;
+
+      const parsedMaterial = JSON.parse(material);
+      const parsedColor = JSON.parse(color);
 
       // Check against filters. Only return row if values match filters.
       for (let filter in appliedFilters) {
         var key = appliedFilters[filter]["key"];
         var value = appliedFilters[filter]["value"];
         if (key == "material") {
-          if (!material.some(i => value.includes(i))) {
+          if (!parsedMaterial.some(i => value.includes(i))) {
             show = false;
             break;
           }
         }
         else if (key == "color") {
-          if (!color.some(i => value.includes(i))) {
+          if (!parsedColor.some(i => value.includes(i))) {
             show = false;
             break;
           }
@@ -242,6 +253,18 @@ export function FabricIndex(props) {
         }
       }
 
+      const handleDelete = useCallback(
+        async () => {
+          const response = await fetch(`/api/fabric_entries/delete/${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.ok) {
+            navigate(`/fabrics/fabric-table`);
+          }
+        }, []
+      );
+
       if (show) {
         return (
           <IndexTable.Row
@@ -249,7 +272,7 @@ export function FabricIndex(props) {
             key={index}
             position={index}
             onClick={() => {
-              navigate(`/fabrics/${index}`);
+              navigate(`/fabrics/${id}`);
             }}
           >
             <IndexTable.Cell classname="imageCol">
@@ -261,15 +284,15 @@ export function FabricIndex(props) {
               />
             </IndexTable.Cell>
             <IndexTable.Cell classname="nameCol">
-              <UnstyledLink data-primary-link url={`/fabrics/${index}`}>
-                {truncate(name, 25)}
+              <UnstyledLink data-primary-link url={`/fabrics/${id}`}>
+                {truncate(title, 25)}
               </UnstyledLink>
             </IndexTable.Cell>
             <IndexTable.Cell classname="materialCol">
-              {Array.from(material).join(", ")}
+              {Array.from(parsedMaterial).join(", ")}
             </IndexTable.Cell>
             <IndexTable.Cell classname="colorCol">
-              {Array.from(color).join(", ")}
+              {Array.from(parsedColor).join(", ")}
             </IndexTable.Cell>
             <IndexTable.Cell classname="statusCol">
               {status == "Active" ? (
@@ -282,7 +305,9 @@ export function FabricIndex(props) {
               {truncate(notes, 25)}
             </IndexTable.Cell>
             <IndexTable.Cell classname="actionsCol">
-              {actions}
+              <Button onClick={handleDelete}>
+                Delete
+              </Button>
             </IndexTable.Cell>
           </IndexTable.Row>
         );
@@ -314,7 +339,7 @@ export function FabricIndex(props) {
         </div>
       </div>
       <IndexTable
-        itemCount={props.entries.length}
+        itemCount={entries.length}
         headings={[
           { title: "Image", hidden: true },
           { title: "Name" },

@@ -1,15 +1,22 @@
-import { Card, Page, Layout, TextContainer, Heading, ChoiceList, TextField, Filters, ResourceList, ResourceItem, TextStyle, Button, Avatar } from "@shopify/polaris";
+import { Card, Page, Layout, TextContainer, Heading, ChoiceList, TextField, Filters, ResourceList, ResourceItem, TextStyle, Button, Avatar, SkeletonBodyText } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
+import { LoadingCard } from "../../components/LoadingCard";
 import { EmptyListCard } from "../../components/EmptyListCard";
 import { FabricIndex } from "../../components";
+import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
 
 export default function FabricTable() {
-  const debug = true;
+  const debug = false;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const fetch = useAuthenticatedFetch();
 
-  // Entry order: {Image, Name, Material, Color, Status, Notes, Actions},
-  var entryList = []
+
+  let refetchEntries;
+  let loadingEntries;
+  let isRefetchingEntries = false;
+  let entryList = [];
   if (debug) {
     // Mock entries for testing
     entryList = [
@@ -41,15 +48,33 @@ export default function FabricTable() {
         actions: "",
       },
     ]
+  } else {
+    ({ data: entryList,
+      refetch: refetchEntries,
+      isLoading: loadingEntries,
+      isRefetching: isRefetchingEntries,
+    } = useAppQuery({
+      url: "/api/fabric_entries/index",
+      reactQueryOptions: {
+        onSuccess: () => {
+          setIsLoading(false);
+        },
+      },
+    }));
   }
 
+  // Show Loading card when getting data
+  const loadingMarkup = isLoading ? (
+    <LoadingCard/>
+  ) : null;
+
   // Show EmptyState card if there's no entries
-  const emptyStateMarkup = !entryList?.length ? (
+  const emptyStateMarkup = !isLoading && !entryList?.length ? (
     <EmptyListCard/>
   ) : null;
 
   // Show FabricIndex if there are entries
-  const fabricsMarkup = entryList?.length ? (
+  const fabricsMarkup = !isLoading && entryList?.length ? (
     <FabricIndex entries={entryList} />
   ) : null;
 
@@ -69,6 +94,7 @@ export default function FabricTable() {
           }
         ]}
       />
+      {loadingMarkup}
       {emptyStateMarkup}
       {fabricsMarkup}
     </Page>

@@ -45,42 +45,14 @@ export default function EditTag() {
   if (isLoading) {
     return (
     <Page narrowWidth>
-      <TitleBar
-        title="Edit Tag"
-        breadcrumbs={breadcrumbs}
-        primaryAction={{
-          content: "Save",
-          onAction: () => console.log(tag),
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => navigate("/tags/tag-table"),
-          },
-        ]}
-      />
       <LoadingCard />
     </Page>
   );
   } else {
     return (
-    <Page narrowWidth>
-      <TitleBar
-        title="Edit Tag"
-        breadcrumbs={breadcrumbs}
-        primaryAction={{
-          content: "Save",
-          // onAction: () =>{ fetch(`/api/tag_entries/show/${id}`); },
-          onAction: () => console.log("saving tag"),
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => navigate("/tags/tag-table"),
-          },
-        ]}
-      />
-      <TagForm Tag={tag} />
-    </Page>
-  );}
+      <Page narrowWidth>
+        <TagForm Tag={tag} Title="Edit Tag" Breadcrumbs={breadcrumbs}/>
+      </Page>
+    );
+  }
 }

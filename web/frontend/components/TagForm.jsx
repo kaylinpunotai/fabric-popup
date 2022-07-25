@@ -12,12 +12,13 @@ import {
 import {
   useAppBridge,
   useNavigate,
+  TitleBar
 } from "@shopify/app-bridge-react";
 import { useAuthenticatedFetch, useAppQuery } from "../hooks";
-import { useForm, useField, notEmptyString } from "@shopify/react-form";
+import { useForm, useField, notEmptyString, propagateErrors } from "@shopify/react-form";
 
 
-export function TagForm ({ Tag: InitialTag }) {
+export function TagForm ({ Tag: InitialTag, Title:title, Breadcrumbs:breadcrumbs }) {
   const [Tag, setTag] = useState(InitialTag);
   const navigate = useNavigate();
   const appBridge = useAppBridge();
@@ -25,15 +26,11 @@ export function TagForm ({ Tag: InitialTag }) {
 
   const [cat, setCat] = useState(Tag?.category || "Color");
   const handleCategoryChange = useCallback((value) => {
-    // Tag.category = value[0]; 
-    // setTag(Tag);
     setCat(value[0]);
   });
 
   const [note, setNote] = useState(Tag?.notes || "");
   const handleNoteChange = useCallback((value) => {
-    // Tag.notes = value; 
-    // setTag(Tag);
     setNote(value);
   },[]);
 
@@ -65,14 +62,18 @@ export function TagForm ({ Tag: InitialTag }) {
   const deleteTag = useCallback(
     async () => {
       reset();
-      const response = await fetch(`/api/tag_entries/delete/${Tag.id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) {
-        navigate(`/tags/tag-table`);
-      }
-    }, [Tag]
+      if (Tag?.id) {
+        const response = await fetch(`/api/tag_entries/delete/${Tag.id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+          navigate(`/tags/tag-table`);
+        }
+      } else {
+        navigate("/tags/tag-table")
+      } 
+    [Tag]}
   );
 
   // Tag values when you click Save
@@ -94,30 +95,37 @@ export function TagForm ({ Tag: InitialTag }) {
         validates: [notEmptyString("Name required")],
       }),
       category: useField({
-        value: Tag?.category || cat,
+        value: cat,
       }),
       notes: useField({
-        value: Tag?.notes || note,
+        value: note,
       }),
     },
     onSubmit,
   });
 
-
-
-
-
   return (
     <Form>
-      <Button onClick= {submit}>
-        Save
-      </Button>
-      <Button onClick= {reset}>
-        Cancel
-      </Button>
-      <Button onClick= {deleteTag}>
-        Delete
-      </Button>
+        <TitleBar
+          title={title}
+          breadcrumbs={breadcrumbs}
+          primaryAction={{
+            content: "Save",
+            onAction: submit,
+          }}
+          secondaryActions={[
+            {
+              content: "Cancel",
+              onAction: () => navigate("/tags/tag-table"),
+            },
+            {
+              content: "Delete",
+              onAction: deleteTag,
+              destructive: true,
+              disabled: title == "New Tag",
+            }
+          ]}
+        />
       <FormLayout>
         <Card title="Name" sectioned>
           <TextField

@@ -9,17 +9,89 @@ import {
 import { Toast } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
+async function getCount(dataset, key, value) {
+  let count;
+  const url = `/api/${dataset}/filter`;
+  const body = {"tag_entry": {"category":value}};
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/json" },
+  });
+  if (response.ok) {
+    count = await response.json();
+    console.log(count);
+    // return count.length;
+  }
+  // else {
+  //   return 1;
+  // }
+}
+
 export function StatsCard() {
-  const emptyToastProps = { content: null };
+  // const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
-  const [toastProps, setToastProps] = useState(emptyToastProps);
+  // const [toastProps, setToastProps] = useState(emptyToastProps);
   const fetch = useAuthenticatedFetch();
 
+
+  // Get total material count from Tag table
+  // const {
+  //   data: materials,
+  //   isLoading: isLoadingMaterials,
+  // } = useAppQuery({
+  //   url: "/api/tag_entries/filter",
+  //   fetchInit: {
+  //     method: "POST",
+  //     body: JSON.stringify({"category":"Material"}),
+  //     headers: { "Content-Type": "application/json" },
+  //   },
+  //   reactQueryOptions: {
+  //     onSuccess: () => {
+  //       setIsLoading(false);
+  //     },
+  //   },
+  // });
+  // // Get total color count from Tag table
+  // const {
+  //   data: colors,
+  //   isLoading: isLoadingColors,
+  // } = useAppQuery({
+  //   url: "/api/tag_entries/filter",
+  //   fetchInit: {
+  //     method: "POST",
+  //     body: JSON.stringify({"category":"Color"}),
+  //     headers: { "Content-Type": "application/json" },
+  //   },
+  //   reactQueryOptions: {
+  //     onSuccess: () => {
+  //       setIsLoading(false);
+  //     },
+  //   },
+  // });async function getCount(dataset, key, value) {
+    
+  // const [isLoadingMaterials, setLoadingMaterials] = useState(true);
+  // const materials = async() => {
+  //   const url = `/api/tag_entries/filter`;
+  //   const body = {"tag_entry": {"category":"Material"}};
+
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     body: JSON.stringify(body),
+  //     headers: { "Content-Type": "application/json" },
+  //   });
+  //   if (response.ok) {
+  //     // materials = await response.json();
+  //     console.log("done");
+  //     setLoadingMaterials(false);
+  //   }
+  // }
+  // const materials = getCount("tag_entries", "category", "Material");
+  // Get total products from Shopify table
   const {
     data: products,
-    refetch: refetchProductCount,
-    isLoading: isLoadingCount,
-    isRefetching: isRefetchingCount,
+    isLoading: isLoadingProducts,
   } = useAppQuery({
     url: "/api/products/count",
     reactQueryOptions: {
@@ -29,59 +101,44 @@ export function StatsCard() {
     },
   });
 
-  const {
-    data: colors,
-    refetch: refetchColors,
-    isLoading: isLoadingColors,
-    isRefetching: isRefetchingColors,
-  } = useAppQuery({
-    url: "/api/tag_entries/index",
-    reactQueryOptions: {
-      onSuccess: () => {
-        setIsLoading(false);
-      },
-    },
-  });
 
+  // const toastMarkup = toastProps.content && !isRefetchingCount && (
+  //   <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
+  // );
 
-  const toastMarkup = toastProps.content && !isRefetchingCount && (
-    <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
-  );
+  // const handlePopulate = async () => {
+  //   setIsLoading(true);
+  //   const response = await fetch("/api/products/create");
 
-  const handlePopulate = async () => {
-    setIsLoading(true);
-    const response = await fetch("/api/products/create");
-
-    if (response.ok) {
-      await refetchProductCount();
-      setToastProps({ content: "5 products created!" });
-    } else {
-      setIsLoading(false);
-      setToastProps({
-        content: "There was an error creating products",
-        error: true,
-      });
-    }
-  };
+  //   if (response.ok) {
+  //     await refetchProductCount();
+  //     setToastProps({ content: "5 products created!" });
+  //   } else {
+  //     setIsLoading(false);
+  //     setToastProps({
+  //       content: "There was an error creating products",
+  //       error: true,
+  //     });
+  //   }
+  // };
 
   return (
     <>
-      {toastMarkup}
+      {/* {toastMarkup} */}
       <Card
         title="Database Stats"
         sectioned
-        primaryFooterAction={{
-          content: "Populate 5 products",
-          onAction: handlePopulate,
-          loading: isLoading,
-        }}
+        primaryFooterAction={ null
+          // {content: "Populate 5 products",
+          // onAction: handlePopulate,
+          // loading: isLoading,}
+        }
       >
         <TextContainer spacing="loose">
           <Heading element="h4">
             TOTAL FABRICS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : products.count}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -103,7 +160,8 @@ export function StatsCard() {
             TOTAL COLORS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingColors ? "-" : colors.length}
+                {/* {isLoadingColors ? "-" : colors.length} */}
+                {/* {getCount("tag_entries", "category", "Color").length} */}
               </TextStyle>
             </DisplayText>
           </Heading>
@@ -111,6 +169,16 @@ export function StatsCard() {
             TOTAL MATERIALS
             <DisplayText size="medium">
               <TextStyle variation="strong">
+                {/* {isLoadingMaterials ? "-" : materials.length} */}
+                {/* {getCount("tag_entries", "category", "Material").length} */}
+              </TextStyle>
+            </DisplayText>
+          </Heading>
+          <Heading element="h4">
+            TOTAL PRODUCTS
+            <DisplayText size="medium">
+              <TextStyle variation="strong">
+                {isLoadingProducts ? "-" : products.count}
               </TextStyle>
             </DisplayText>
           </Heading>

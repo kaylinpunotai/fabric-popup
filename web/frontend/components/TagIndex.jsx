@@ -17,7 +17,6 @@ function truncate(str, n) {
 }
 
 export function TagIndex(props) {
-  const debug = true;
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   let tags = props.tags;
@@ -133,7 +132,6 @@ export function TagIndex(props) {
         if (response.ok) {
           tags = await response.json();
           rowMarkup;
-          console.log(tags);
         }
       }) ();
       setSortValue(sortBy);
@@ -141,6 +139,10 @@ export function TagIndex(props) {
     },
     []
   );
+
+
+
+  
 
   // Map entry and organize data into row cells. Each entry gets its own index page
   let rowMarkup = tags.map(

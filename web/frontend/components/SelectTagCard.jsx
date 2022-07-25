@@ -2,7 +2,9 @@ import { TextStyle, Stack, Tag, Listbox, EmptySearchResult, Combobox, Card, Sele
 import { useState, useCallback, useMemo } from "react";
 
 // props 
-// TagType = "Material" or "Color"
+// str TagType = "Material" or "Color"
+// str[] ExistingTags = initial array of selected tags
+// function PassValue(newValue) = updates selected tags in parent form
 function SelectTag( props ) {
   const [selectedTags, setSelectedTags] = useState(props.ExistingTags);
   const [value, setValue] = useState("");
@@ -18,6 +20,7 @@ function SelectTag( props ) {
         nextSelectedTags.add(selected);
       }
       setSelectedTags([...nextSelectedTags]);
+      props.PassValue([...nextSelectedTags]);
       setValue("");
       setSuggestion("");
     },
@@ -152,10 +155,11 @@ export class SelectTagCard extends React.Component {
   render() {
     const tagType = this.props.TagType;
     const existingTags = this.props.Content;
+    const passValue = this.props.PassValue;
 
     return(
       <Card title={tagType + " Tags"} sectioned>
-        <SelectTag TagType={tagType} ExistingTags={existingTags}></SelectTag>
+        <SelectTag TagType={tagType} ExistingTags={existingTags} PassValue={passValue}></SelectTag>
       </Card>
     );
   }

@@ -10,21 +10,7 @@ export default function NewTag() {
 
   return (
     <Page narrowWidth>
-      <TitleBar
-        title="New Tag"
-        breadcrumbs={breadcrumbs}
-        primaryAction={{
-          content: "Save",
-          onAction: () => console.log("saving tag"),
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => navigate("/tags/tag-table"),
-          },
-        ]}
-      />
-      <TagForm/>
+      <TagForm Title="New Tag" Breadcrumbs={breadcrumbs}/>
     </Page>
   );
 }

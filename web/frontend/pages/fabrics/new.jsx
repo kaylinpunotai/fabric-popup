@@ -10,21 +10,7 @@ export default function NewFabric() {
 
   return (
     <Page narrowWidth>
-      <TitleBar
-        title="New Entry"
-        breadcrumbs={breadcrumbs}
-        primaryAction={{
-          content: "Save",
-          onAction: () => console.log("saving fabric"),
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => navigate("/fabrics/fabric-table"),
-          },
-        ]}
-      />
-      <FabricForm/>
+      <FabricForm Title="New Fabric" Breadcrumbs={breadcrumbs}/>
     </Page>
   );
 }

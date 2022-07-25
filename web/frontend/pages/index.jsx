@@ -2,6 +2,8 @@ import { Card, Page, Layout, TextContainer, Stack, Heading, Button } from "@shop
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
 import { StatsCard } from "../components";
 
+///// WIP /////
+
 export default function HomePage() {
   const navigate = useNavigate();
   return (

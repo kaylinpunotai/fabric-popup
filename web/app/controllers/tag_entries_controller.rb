@@ -42,8 +42,14 @@ class TagEntriesController < ApplicationController
     render json: @filtered
   end
 
-  def distinct
-    @filtered = TagEntry.where(params.require(:arg))
+  def materials
+    @filtered = TagEntry.where(category: "Material")
+    @distinct = @filtered.distinct.pluck(:name)
+    render json: @distinct
+  end
+
+  def colors
+    @filtered = TagEntry.where(category: "Color")
     @distinct = @filtered.distinct.pluck(:name)
     render json: @distinct
   end

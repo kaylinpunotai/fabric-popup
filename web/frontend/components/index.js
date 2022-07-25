@@ -7,5 +7,4 @@ export { SelectTagCard } from "./SelectTagCard";
 export { StatsCard } from "./StatsCard";
 export { TagForm } from "./TagForm";
 export { TagIndex } from "./TagIndex";
-export { TextInputCard } from "./TextInputCard";
 export * from "./providers";

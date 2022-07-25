@@ -32,7 +32,8 @@ Rails.application.routes.draw do
   post "/api/tag_entries", to: "tag_entries#create"
   patch "/api/tag_entries/update/:id", to: "tag_entries#update"
   delete "/api/tag_entries/delete/:id", to: "tag_entries#destroy"
-  post "/api/tag_entries/distinct", to: "tag_entries#distinct"
+  get "/api/tag_entries/Material", to: "tag_entries#materials"
+  get "/api/tag_entries/Color", to: "tag_entries#colors"
 
 
   ## Any other routes will just render the react app

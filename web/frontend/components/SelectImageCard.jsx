@@ -2,6 +2,8 @@ import { DropZone, Stack, Banner, List, Card, MediaCard } from "@shopify/polaris
 import { NoteMinor } from "@shopify/polaris-icons";
 import { useState, useCallback } from "react";
 
+///// WIP /////
+
 function ImageDrop( props ) {
   const [file, setFile] = useState(props.file);
   const [rejectedFiles, setRejectedFiles] = useState([]);

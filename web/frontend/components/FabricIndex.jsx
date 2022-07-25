@@ -14,8 +14,11 @@ import {
   ChoiceList,
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
-import { ImageMajor } from "@shopify/polaris-icons";
+import { ImageMajor, DeleteMajor } from "@shopify/polaris-icons";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+
+
+///// WIP /////
 
 // Function to truncate long strings
 function truncate(str, n) {
@@ -198,7 +201,7 @@ export function FabricIndex(props) {
   }
   
 
-  // SORTING // Name, Status, Index
+  ///// WIP /////   // SORTING // Name, Status, Index
   const sortOptions = [
     { label: "Name", value: "name" },
     { label: "Status", value: "status" },
@@ -305,8 +308,8 @@ export function FabricIndex(props) {
               {truncate(notes, 25)}
             </IndexTable.Cell>
             <IndexTable.Cell classname="actionsCol">
-              <Button onClick={handleDelete}>
-                Delete
+              <Button destructive onClick={handleDelete}>
+                <Icon source={DeleteMajor} />
               </Button>
             </IndexTable.Cell>
           </IndexTable.Row>

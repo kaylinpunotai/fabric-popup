@@ -6,10 +6,14 @@ import {
   Filters,
   Select,
   ChoiceList,
-  Button
+  Button,
+  Icon
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
+import { DeleteMajor } from "@shopify/polaris-icons";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+
+///// WIP /////
 
 // Function to truncate long strings
 function truncate(str, n) {
@@ -112,7 +116,7 @@ export function TagIndex(props) {
   }
   
 
-  // SORTING // Name, Category, Assignments
+  ///// WIP ///// // SORTING // Name, Category, Assignments
   const sortOptions = [
     { label: "Name", value: "name" },
     { label: "Category", value: "category" },
@@ -208,8 +212,8 @@ export function TagIndex(props) {
               {truncate(notes, 25)}
             </IndexTable.Cell>
             <IndexTable.Cell classname="actionsCol">
-              <Button onClick={handleDelete}>
-                Delete
+              <Button destructive onClick={handleDelete}>
+                <Icon source={DeleteMajor} />
               </Button>
             </IndexTable.Cell>
           </IndexTable.Row>

@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { FabricForm } from "../../components/FabricForm";
 import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
 
+///// WIP /////
+
 
 export default function EditFabric() {
   const debug = false;

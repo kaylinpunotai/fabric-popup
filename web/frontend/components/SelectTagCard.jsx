@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 ///// WIP /////
+// - Create new tag in tag_entries table whenever a new value is entered 
 
 
 // props 

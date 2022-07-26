@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   post "/api/fabric_entries", to: "fabric_entries#create"
   patch "/api/fabric_entries/update/:id", to: "fabric_entries#update"
   delete "/api/fabric_entries/delete/:id", to: "fabric_entries#destroy"
+  get "/api/fabric_entries/active", to: "fabric_entries#active"
+  get "/api/fabric_entries/hidden", to: "fabric_entries#hidden"
 
 
   get "/api/tag_entries/index", to: "tag_entries#index"

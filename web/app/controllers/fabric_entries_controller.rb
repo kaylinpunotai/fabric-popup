@@ -46,6 +46,18 @@ class FabricEntriesController < ApplicationController
     render json: @filtered
   end
 
+  def active
+    @filtered = FabricEntry.where(status: "Active")
+    @distinct = @filtered.distinct.pluck(:title)
+    render json: @distinct
+  end
+
+  def hidden
+    @filtered = FabricEntry.where(status: "Hidden")
+    @distinct = @filtered.distinct.pluck(:title)
+    render json: @distinct
+  end
+
   private
     def fabric_entry_params
       params.require(:fabric_entry).permit(:image, :title, {:material => []}, {:color => []}, :status, :notes, :id)

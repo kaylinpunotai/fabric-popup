@@ -3,6 +3,8 @@ import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
 import { StatsCard } from "../components";
 
 ///// WIP /////
+// - Update description
+// - Make neater
 
 export default function HomePage() {
   const navigate = useNavigate();

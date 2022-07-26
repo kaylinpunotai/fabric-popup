@@ -12,6 +12,7 @@ import {
   Button,
   TextField,
   ChoiceList,
+  Badge
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { ImageMajor, DeleteMajor } from "@shopify/polaris-icons";
@@ -296,9 +297,9 @@ export function FabricIndex(props) {
             </IndexTable.Cell>
             <IndexTable.Cell classname="statusCol">
               {status == "Active" ? (
-                <TextStyle variation="positive">{status}</TextStyle>
+                <Badge status="success">{status}</Badge>
               ) : (
-                <TextStyle variation="negative">{status}</TextStyle>
+                <Badge status="critical">{status}</Badge>
               )}
             </IndexTable.Cell>
             <IndexTable.Cell classname="notesCol">

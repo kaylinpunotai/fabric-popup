@@ -7,6 +7,7 @@ import { FabricForm } from "../../components/FabricForm";
 import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
 
 ///// WIP /////
+// - image selection
 
 
 export default function EditFabric() {

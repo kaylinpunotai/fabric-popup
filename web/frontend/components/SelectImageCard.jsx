@@ -3,6 +3,7 @@ import { NoteMinor } from "@shopify/polaris-icons";
 import { useState, useCallback } from "react";
 
 ///// WIP /////
+// - image selection
 
 function ImageDrop( props ) {
   const [file, setFile] = useState(props.file);

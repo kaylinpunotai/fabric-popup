@@ -11,11 +11,7 @@ export default function TagTable() {
   const debug = false;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const fetch = useAuthenticatedFetch();
 
-  let refetchTags;
-  let loadingTags;
-  let isRefetchingTags = false;
   let tagList = [];
   if (debug) {
     // Mock tags for testing
@@ -44,11 +40,7 @@ export default function TagTable() {
     ]
     setIsLoading(false);
   } else {
-    ({ data: tagList,
-      refetch: refetchTags,
-      isLoading: loadingTags,
-      isRefetching: isRefetchingTags,
-    } = useAppQuery({
+    ({ data: tagList } = useAppQuery({
       url: "/api/tag_entries/index",
       reactQueryOptions: {
         onSuccess: () => {

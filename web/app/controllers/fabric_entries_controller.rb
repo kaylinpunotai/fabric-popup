@@ -1,7 +1,7 @@
 class FabricEntriesController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    @fabric_entries = FabricEntry.all
+    @fabric_entries = FabricEntry.order(:title)
     render json: @fabric_entries
   end
 
@@ -37,7 +37,7 @@ class FabricEntriesController < ApplicationController
   end
 
   def sort 
-    @sorted = FabricEntry.order(params[:column])
+    @sorted = FabricEntry.order(params.require(:column))
     render json: @sorted
   end
 

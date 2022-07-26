@@ -18,8 +18,6 @@ import { ImageMajor, DeleteMajor } from "@shopify/polaris-icons";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 
-///// WIP /////
-
 // Function to truncate long strings
 function truncate(str, n) {
   if (str == null) {return}
@@ -27,20 +25,20 @@ function truncate(str, n) {
 }
 
 export function FabricIndex(props) {
-  const debug = true;
+  const debug = false;
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   let entries = props.entries;
 
   ///// FILTERS ///// Material, Color, Status, Notes
   // Default values
-  var materialChoices = [];
-  var colorChoices = [];
-  var statusChoices = [
+  let materialChoices = [];
+  let colorChoices = [];
+  let statusChoices = [
     { label: "Active", value: "Active" },
     { label: "Hidden", value: "Hidden" }
   ]
-  var notesChoices = [
+  let notesChoices = [
     { label: "Notes", value: "Notes" },
     { label: "No Notes", value: "No Notes" }
   ]
@@ -55,6 +53,18 @@ export function FabricIndex(props) {
       { label: "Green", value: "Green" },
       { label: "Beige", value: "Beige" },
     ]
+    console.log(materialChoices);
+  } else {
+    let allMats = [];
+    let allCols = [];
+    ({data: allMats} = useAppQuery( {
+      url: `/api/tag_entries/Material`,
+    }));
+    ({data: allCols} = useAppQuery( {
+      url: `/api/tag_entries/Color`,
+    }));
+    for (let x in allMats) {materialChoices.push({label: allMats[x], value: allMats[x]})}
+    for (let x in allCols) {colorChoices.push({label: allCols[x], value: allCols[x]})}
   }
 
   const [material, setMaterial] = useState();
@@ -199,19 +209,6 @@ export function FabricIndex(props) {
       onRemove: handleNotesRemove,
     });
   }
-  
-
-  ///// WIP /////   // SORTING // Name, Status, Index
-  const sortOptions = [
-    { label: "Name", value: "name" },
-    { label: "Status", value: "status" },
-    { label: "Index", value: "index" },
-  ];
-  const [sortValue, setSortValue] = useState("name");
-  const handleSortChange = useCallback((value) => setSortValue(value), []);
-
-
-
 
   
   // Map entry and organize data into row cells. Each entry gets its own index page
@@ -319,7 +316,7 @@ export function FabricIndex(props) {
     }
   );
 
-  // Display filter, sort, and table headers
+  // Display filter and table headers
   return (
     <Card>
       <div style={{ padding: "16px", display: "flex" }}>
@@ -329,15 +326,6 @@ export function FabricIndex(props) {
             appliedFilters={appliedFilters}
             onClearAll={handleFiltersClearAll}
             hideQueryField
-          />
-        </div>
-        <div style={{ paddingLeft: "0.25rem" }}>
-          <Select
-            labelInline
-            label="Sort by"
-            options={sortOptions}
-            value={sortValue}
-            onChange={handleSortChange}
           />
         </div>
       </div>

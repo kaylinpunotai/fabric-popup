@@ -13,8 +13,6 @@ import { useState, useCallback } from "react";
 import { DeleteMajor } from "@shopify/polaris-icons";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
-///// WIP /////
-
 // Function to truncate long strings
 function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + "…" : str;
@@ -116,38 +114,6 @@ export function TagIndex(props) {
   }
   
 
-  ///// WIP ///// // SORTING // Name, Category, Assignments
-  const sortOptions = [
-    { label: "Name", value: "name" },
-    { label: "Category", value: "category" },
-    { label: "Assignments", value: "assignments" },
-  ];
-  const [sortValue, setSortValue] = useState("name");
-  const handleSortChange = useCallback(
-    (sortBy) => {
-      (async () => {
-        const parseSort = {"column": sortBy};
-        const url = "/api/tag_entries/sort";
-        const response = await fetch(url, {
-          method: "POST",
-          body: JSON.stringify(parseSort),
-          headers: { "Content-Type": "application/json" },
-        });
-        if (response.ok) {
-          tags = await response.json();
-          rowMarkup;
-        }
-      }) ();
-      setSortValue(sortBy);
-      return { status: "success" };
-    },
-    []
-  );
-
-
-
-  
-
   // Map entry and organize data into row cells. Each entry gets its own index page
   let rowMarkup = tags.map(
     ({ name, category, assignments, notes, id }, index) => {
@@ -223,7 +189,7 @@ export function TagIndex(props) {
     }
   );
 
-  // Display filter, sort, and table headers
+  // Display filter and table headers
   return (
     <Card>
       <div style={{ padding: "16px", display: "flex" }}>
@@ -233,15 +199,6 @@ export function TagIndex(props) {
             appliedFilters={appliedFilters}
             onClearAll={handleFiltersClearAll}
             hideQueryField
-          />
-        </div>
-        <div style={{ paddingLeft: "0.25rem" }}>
-          <Select
-            labelInline
-            label="Sort by"
-            options={sortOptions}
-            value={sortValue}
-            onChange={handleSortChange}
           />
         </div>
       </div>

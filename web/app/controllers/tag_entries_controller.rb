@@ -1,7 +1,7 @@
 class TagEntriesController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    @tag_entries = TagEntry.all
+    @tag_entries = TagEntry.order(:name)
     render json: @tag_entries
   end
 
@@ -33,7 +33,7 @@ class TagEntriesController < ApplicationController
   end
 
   def sort 
-    @sorted = TagEntry.order(params[:column])
+    @sorted = TagEntry.order(params.require(:column))
     render json: @sorted
   end
 

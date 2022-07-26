@@ -10,12 +10,7 @@ export default function FabricTable() {
   const debug = false;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const fetch = useAuthenticatedFetch();
 
-
-  let refetchEntries;
-  let loadingEntries;
-  let isRefetchingEntries = false;
   let entryList = [];
   if (debug) {
     // Mock entries for testing
@@ -49,11 +44,7 @@ export default function FabricTable() {
       },
     ]
   } else {
-    ({ data: entryList,
-      refetch: refetchEntries,
-      isLoading: loadingEntries,
-      isRefetching: isRefetchingEntries,
-    } = useAppQuery({
+    ({ data: entryList } = useAppQuery({
       url: "/api/fabric_entries/index",
       reactQueryOptions: {
         onSuccess: () => {

@@ -1,0 +1,16 @@
+{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+
+<div>
+  <label for="custom-gift">This is a Gift</label>
+  <input type="checkbox" value="Yes" id="custom-gift" form="{{ product_form_id }}" name="properties[This is a Gift]" />
+</div>
+
+{% schema %}
+    {
+      "name": "Gift checkbox",
+      "templates": ["product"],
+      "target": "section",
+      "stylesheet": "app.css",
+      "javascript": "app.js"
+    }
+{% endschema %}

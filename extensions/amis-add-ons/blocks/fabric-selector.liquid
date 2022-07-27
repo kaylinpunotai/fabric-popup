@@ -1,5 +1,9 @@
-{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+{% comment %} WIP
+- add material filters
+- query materials for Allowed Fabrics settings {% endcomment %}
 
+
+{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
 
 <div>
   <label for="fabric_option_1">
@@ -7,20 +11,18 @@
   </label>
   <select id="fabric_option_{{ block.settings.fabric_option_name }}"
     form="{{ product_form_id }}"
-    name="properties[{{ block.settings.fabric_option_name }}"
+    name="properties[{{ block.settings.fabric_option_name }}]"
     class="fabric-selector"
   >
   </select>
 </div> 
 
-<script src="{{ 'get-fabrics.js' | asset_url }}" defer></script>
 
 {% schema %}
   {
     "name": "Fabric Selector",
     "templates": ["product"],
     "target": "section",
-    "stylesheet": "app.css",
     "javascript": "get-fabrics.js",
     "settings": [
       {

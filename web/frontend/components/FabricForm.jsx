@@ -159,7 +159,9 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
     const getExisting = await authFetch(`/api/tag_entries/${type}`);
     if (getExisting.ok) {
       const existing = await getExisting.json();
-      const parsedSubmitted = JSON.parse(submitted);
+      let parsedSubmitted = submitted;
+      try {parsedSubmitted = JSON.parse(submitted);}
+      catch {}
 
       // Compare submitted to existing tags
       parsedSubmitted.forEach( (tag) => {
@@ -247,7 +249,6 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
             const getFileResult = await getFile.json();
             setDoneUploading(true);
             setImgUrl(getFileResult.image.url);
-            console.log(getFileResult.image.url);
           }
         }
       }

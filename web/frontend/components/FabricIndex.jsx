@@ -278,10 +278,10 @@ export function FabricIndex(props) {
           >
             <IndexTable.Cell classname="imageCol">
               <Thumbnail
-                source={image?.url || ImageMajor}
+                source={image || ImageMajor}
                 alt="placeholder"
                 color="base"
-                size="small"
+                size="large"
               />
             </IndexTable.Cell>
             <IndexTable.Cell classname="nameCol">

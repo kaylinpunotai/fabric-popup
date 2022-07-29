@@ -16,6 +16,11 @@ Rails.application.routes.draw do
   get "/api/products/create", to: "products#create"
 
 
+  post "/api/images/create", to: "images#create"
+  post "/api/images/upload", to: "images#upload"
+  post "/api/images/get", to: "images#get"
+  
+
   get "/api/fabric_entries/index", to: "fabric_entries#index"
   post "/api/fabric_entries/sort", to: "fabric_entries#sort"
   post "/api/fabric_entries/filter", to: "fabric_entries#filter"

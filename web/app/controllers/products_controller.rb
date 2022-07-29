@@ -6,7 +6,7 @@ class ProductsController < AuthenticatedController
   end
 
   def create
-    ProductCreator.call(count: 5)
+    ProductCreator.call(count: 1)
 
     success = true
     error = nil

@@ -6,9 +6,6 @@ import { useParams } from "react-router-dom";
 import { FabricForm } from "../../components/FabricForm";
 import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
 
-///// WIP /////
-// - image selection
-
 
 export default function EditFabric() {
   const debug = false;
@@ -26,7 +23,6 @@ export default function EditFabric() {
     // Mock values for testing
     entry = {
       title: "test title",
-      // image: "/Users/kaylinpunotai/Desktop/amiscreationsus/fabric-popup/web/frontend/assets/home-trophy.png",
       image: "",
       material: [],
       color: ["Black", "Purple"],

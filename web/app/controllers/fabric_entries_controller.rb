@@ -48,14 +48,16 @@ class FabricEntriesController < ApplicationController
 
   def active
     @filtered = FabricEntry.where(status: "Active")
-    @distinct = @filtered.distinct.pluck(:title)
-    render json: @distinct
+    render json: @filtered
+    # @distinct = @filtered.distinct.pluck(:title)
+    # render json: @distinct
   end
 
   def hidden
     @filtered = FabricEntry.where(status: "Hidden")
-    @distinct = @filtered.distinct.pluck(:title)
-    render json: @distinct
+    render json: @filtered
+    # @distinct = @filtered.distinct.pluck(:title)
+    # render json: @distinct
   end
 
   private

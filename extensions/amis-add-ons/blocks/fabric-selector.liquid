@@ -1,9 +1,13 @@
-{% comment %} WIP
+{% comment %} 
+///// WIP /////
 - add material filters
-- query materials for Allowed Fabrics settings {% endcomment %}
+- query materials for Allowed Fabrics settings 
+- include "Custom" to display text box and type selection
+{% endcomment %}
 
 
 {%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+{%- assign cotton = section.settings.CottonChkbx -%}
 
 <div>
   <label for="fabric_option_1">
@@ -14,6 +18,10 @@
     name="properties[{{ block.settings.fabric_option_name }}]"
     class="fabric-selector"
   >
+    <option selected="" value="" disabled="">Select option</option>
+    <option value="Custom">-Custom-</option>
+    <option value="Surpise me">-Surprise me-</option>
+    <option value="{{ cotton }}">{{ cotton }}</option>
   </select>
 </div> 
 
@@ -33,6 +41,48 @@
       {
         "type": "header",
         "content": "Allowed fabrics:"
+      },
+      {
+        "type": "checkbox",
+        "id": "cotton_cb",
+        "label": "Cotton"
+      },
+      {
+        "type": "checkbox",
+        "id": "lycra_cb",
+        "label": "Lycra"
+      },
+      {
+        "type": "checkbox",
+        "id": "felt_cb",
+        "label": "Felt"
+      },
+      {
+        "type": "checkbox",
+        "id": "flannel_cb",
+        "label": "Flannel"
+      },
+      {
+        "type": "checkbox",
+        "id": "minky_cb",
+        "label": "Minky"
+      },
+      {
+        "type": "checkbox",
+        "id": "satin_cb",
+        "label": "Satin"
+      },
+      {
+        "type": "header",
+        "content": "Notes:"
+      },
+      {
+        "type": "paragraph",
+        "content": "Contact KK to add new fabric materials to this checkbox list."
+      },
+      {
+        "type": "paragraph",
+        "content": "If the customer doesn't select an option (i.e. leaves dropdown menu as default), then no value will be shown with the product in the checkout page."
       }
     ]
   }

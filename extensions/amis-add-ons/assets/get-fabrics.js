@@ -6,34 +6,47 @@
 // - add material filters
 
 (function () {
+  const debug = false;
+  const proxySubpath = "/apps/api";
+  setOptions();
+  
   // get a specific element from liquid
-  function getSelect(selector) {
+  function getElement(selector) {
     return document.querySelector(selector);
   }
 
-  // get all fabrics filtered by allowed materials
+  // get filtered material from schema settings
+  function getFilters() {
+    const filters = `{{ cotton }}`;
+    console.log(filters)
+  }
+  
+  // get all active fabrics filtered by allowed materials
   function getFabrics(filters) {
-    const proxySubpath = "/apps/api";
-    const url = proxySubpath + "/api/fabric_entries/index"; // "/api/fabric_entries/filter";
+    const url = proxySubpath + "/api/fabric_entries/active"; // "/api/fabric_entries/filter";
     const method = "GET"; // "POST"
     const headers = { "Content-Type": "application/json" };
     const body = ""; // {"fabric_entry": {"material": filters}};
     return fetch(url); // return fetch(url, {method: method, headers: headers, body: JSON.stringify(body),});
   }
 
-  // creates an option inside the select input
-  function createOption(fabric) {
+  // create an option to be appended to the select input
+  function createOption(name, imageUrl) {
+    const thumbnail = document.createElement("Thumbnail");
+    thumbnail["source"] = imageUrl;
+    thumbnail["size"] = "small"
     const option = document.createElement("option");
-    option["value"] = fabric;
-    option.innerHTML = fabric;
+    option["value"] = name;
+    option["prefix"] = thumbnail;
+    option.innerHTML = name;
 
     return option;  
   }
 
   // set options for customers to select using fabric list
   async function setOptions() {
-    const debug = false;
-    const select = getSelect(".fabric-selector");
+    const filters = getFilters();
+    const select = getElement(".fabric-selector");
 
     if (debug) {
       const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();
@@ -41,17 +54,14 @@
         select.appendChild(createOption(fabric));
       });
     } else {
-      const result = await getFabrics("filter");
+      const result = await getFabrics("filters");
       if (result.ok) {
-        const fabrics = await result.json();
-        console.log(fabrics);
+        let fabrics = await result.json();
         fabrics.forEach( (fabric) => {
-          select.appendChild(createOption(fabric.title));
+          select.appendChild(createOption(fabric.title, fabric.image));
         });
       }
       return { status: "success" };
     }
   }
-
-  setOptions();
 })();

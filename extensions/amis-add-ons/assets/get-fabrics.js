@@ -33,8 +33,8 @@
   // create an option to be appended to the select input
   function createOption(name, imageUrl) {
     const option = document.createElement("option");
-    option["value"] = name;
-    option["ref"] = imageUrl;
+    // option["value"] = name;
+    option["pic"] = imageUrl;
     option.innerHTML = name;
 
     return option;  
@@ -43,7 +43,7 @@
   // set options for customers to select using fabric list
   async function setOptions() {
     // const filters = getFilters();
-    const select = getElement(".fabric-selector")
+    const select = getElement(".fabric-selector");
 
     if (debug) {
       const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();

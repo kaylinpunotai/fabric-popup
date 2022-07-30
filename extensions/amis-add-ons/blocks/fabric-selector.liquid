@@ -1,31 +1,73 @@
 {% comment %} 
 ///// WIP /////
 - add material filters
-- include "Custom" to display text box and type selection
 {% endcomment %}
 
 
 {%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+{%- assign option_name = block.settings.fabric_option_name -%}
 
 <div>
-  <label for="fabric_option_1">
-    {{ block.settings.fabric_option_name }}
+  <label for="fabric_option_{{ option_name }}">
+    {{ option_name }}
   </label>
-  <select id="fabric_option_{{ block.settings.fabric_option_name }}"
+  <select id="fabric_option_{{ option_name }}"
     form="{{ product_form_id }}"
-    name="properties[{{ block.settings.fabric_option_name }}]"
-    onchange="document.getElementById('pic').src = this.options[this.selectedIndex].getAttribute('ref')"
+    name="properties[{{ option_name }}]"
     class="fabric-selector"
   >
-    <option selected="" value="" disabled="" ref="">Select option</option>
-    <option value="Custom" ref="">-Custom-</option>
-    <option value="Surpise me" ref="">-Surprise me-</option>
+    <option selected="" value="" disabled="" pic="">Select option</option>
+    <option id="custom_select_{{ option_name }}" value="Custom: [blank]" pic="">-Custom-</option>
+    <option pic="">-Surprise me-</option>
   </select>
+  <img id="pic_{{ option_name }}" alt="" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy" style="visibility: hidden"
+    src='data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3.6a1.6 1.6 0 0 1 1.6-1.6h3.4a1 1 0 0 1 0 2h-3v3a1 1 0 0 1-2 0v-3.4zm14.4-1.6a1.6 1.6 0 0 1 1.6 1.6v3.4a1 1 0 1 1-2 0v-3h-3a1 1 0 1 1 0-2h3.4zm0 16h-3.4a1 1 0 1 1 0-2h3v-3a1 1 0 1 1 2 0v3.4a1.6 1.6 0 0 1-1.6 1.6zm-12.8 0a1.6 1.6 0 0 1-1.6-1.6v-3.4a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3.4z"/></svg>' 
+  >
 </div> 
-<img id="pic" alt="" src="https://cdn.shopify.com/s/files/1/0654/8262/1152/files/b5061045-3b66-4d60-b413-79cf068381d9.jpg" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy">
+
+<div id="custom_wrapper_{{ option_name }}" style="visibility: hidden">
+  Request fabric: <input id="custom_textbox_{{ option_name }}" type="text" form="{{ product_form_id }}"/>
+</div>
 
 
 
+
+
+
+
+
+
+<script>
+  // function to handle onchange for select
+  // if Custom: display textbox for user-defined value
+  // for pic: display pic
+  // if pic="": do not display pic
+  let optionName = "{{ option_name }}";
+  const select = document.getElementById("fabric_option_{{ option_name }}");
+  const custom = document.getElementById("custom_select_{{ option_name }}");
+  const image = document.getElementById("pic_{{ option_name }}");
+  const wrapper = document.getElementById("custom_wrapper_{{ option_name }}");
+  const textbox = document.getElementById("custom_textbox_{{ option_name }}");
+
+  // set Custom value to textbox value
+  textbox.onchange = function() {
+    custom.value = "Custom: " + this.value;
+  }
+
+  select.onchange =  function() {
+    if (this.options[this.selectedIndex].text === "-Custom-") {
+      wrapper.style = "visibility: visible";
+      image.style = "visibility: hidden";
+    } else if (this.options[this.selectedIndex].getAttribute("pic") === "") {
+      wrapper.style = "visibility: hidden";
+      image.style = "visibility: hidden";
+    } else {
+      wrapper.style = "visibility: hidden";
+      image.src = this.options[this.selectedIndex].getAttribute("pic");
+      image.style = "visibility: visible";
+    }
+  }
+</script>
 
 
 

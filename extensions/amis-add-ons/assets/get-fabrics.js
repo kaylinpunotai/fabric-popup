@@ -32,12 +32,9 @@
 
   // create an option to be appended to the select input
   function createOption(name, imageUrl) {
-    const thumbnail = document.createElement("Thumbnail");
-    thumbnail["source"] = imageUrl;
-    thumbnail["size"] = "small"
     const option = document.createElement("option");
     option["value"] = name;
-    option["prefix"] = thumbnail;
+    option["ref"] = imageUrl;
     option.innerHTML = name;
 
     return option;  
@@ -45,8 +42,8 @@
 
   // set options for customers to select using fabric list
   async function setOptions() {
-    const filters = getFilters();
-    const select = getElement(".fabric-selector");
+    // const filters = getFilters();
+    const select = getElement(".fabric-selector")
 
     if (debug) {
       const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();
@@ -58,6 +55,7 @@
       if (result.ok) {
         let fabrics = await result.json();
         fabrics.forEach( (fabric) => {
+          console.log(fabric);
           select.appendChild(createOption(fabric.title, fabric.image));
         });
       }

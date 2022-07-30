@@ -1,13 +1,11 @@
 {% comment %} 
 ///// WIP /////
 - add material filters
-- query materials for Allowed Fabrics settings 
 - include "Custom" to display text box and type selection
 {% endcomment %}
 
 
 {%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
-{%- assign cotton = section.settings.CottonChkbx -%}
 
 <div>
   <label for="fabric_option_1">
@@ -16,14 +14,19 @@
   <select id="fabric_option_{{ block.settings.fabric_option_name }}"
     form="{{ product_form_id }}"
     name="properties[{{ block.settings.fabric_option_name }}]"
+    onchange="document.getElementById('pic').src = this.options[this.selectedIndex].getAttribute('ref')"
     class="fabric-selector"
   >
-    <option selected="" value="" disabled="">Select option</option>
-    <option value="Custom">-Custom-</option>
-    <option value="Surpise me">-Surprise me-</option>
-    <option value="{{ cotton }}">{{ cotton }}</option>
+    <option selected="" value="" disabled="" ref="">Select option</option>
+    <option value="Custom" ref="">-Custom-</option>
+    <option value="Surpise me" ref="">-Surprise me-</option>
   </select>
 </div> 
+<img id="pic" alt="" src="https://cdn.shopify.com/s/files/1/0654/8262/1152/files/b5061045-3b66-4d60-b413-79cf068381d9.jpg" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy">
+
+
+
+
 
 
 {% schema %}
@@ -34,9 +37,29 @@
     "javascript": "get-fabrics.js",
     "settings": [
       {
+        "type": "header",
+        "content": "Fabric option name:"
+      },
+      {
         "type": "text",
         "id": "fabric_option_name",
-        "label": "Fabric option name (e.g. eyes, main body, accent)"
+        "label": "e.g. eyes, main body, accent"
+      },
+      {
+        "type": "header",
+        "content": "Image size:"
+      },
+      {
+        "type": "number",
+        "id": "imageHeight",
+        "label": "Height:",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "imageWidth",
+        "label": "Width:",
+        "default": 50
       },
       {
         "type": "header",

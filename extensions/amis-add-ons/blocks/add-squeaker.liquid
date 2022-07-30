@@ -1,7 +1,7 @@
 {% comment %} 
 ///// WIP /////
-- add material filters
-- allow multiple
+- checkbox to add squeaker
+- settings: $$$ per squeaker
 {% endcomment %}
 
 
@@ -38,11 +38,12 @@
 
 
 
-{% comment %} <script>
+<script>
   // function to handle onchange for select
   // if Custom: display textbox for user-defined value
   // for pic: display pic
   // if pic="": do not display pic
+  let optionName = "{{ option_name }}";
   const select = document.getElementById("fabric_option_{{ option_name }}");
   const custom = document.getElementById("custom_select_{{ option_name }}");
   const image = document.getElementById("pic_{{ option_name }}");
@@ -67,13 +68,13 @@
       image.style = "visibility: visible";
     }
   }
-</script> {% endcomment %}
+</script>
 
 
 
 {% schema %}
   {
-    "name": "Fabric Selector",
+    "name": "Squeaker Checkbox",
     "templates": ["product"],
     "target": "section",
     "javascript": "get-fabrics.js",

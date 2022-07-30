@@ -43,23 +43,30 @@
   // set options for customers to select using fabric list
   async function setOptions() {
     // const filters = getFilters();
+    const selects = getElement(".fabric-selector");
+
+    selects.forEach( (select) => {
+      if (debug) {
+        const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();
+        fabrics.forEach( (fabric) => {
+          select.appendChild(createOption(fabric));
+        });
+      } else {
+        const result = await getFabrics("filters");
+        if (result.ok) {
+          let fabrics = await result.json();
+          fabrics.forEach( (fabric) => {
+            console.log(fabric);
+            select.appendChild(createOption(fabric.title, fabric.image));
+          });
+        }
+        return { status: "success" };
+      }
+    });
+  }
+
+  function handleSelectOnChange() {
     const select = getElement(".fabric-selector");
 
-    if (debug) {
-      const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();
-      fabrics.forEach( (fabric) => {
-        select.appendChild(createOption(fabric));
-      });
-    } else {
-      const result = await getFabrics("filters");
-      if (result.ok) {
-        let fabrics = await result.json();
-        fabrics.forEach( (fabric) => {
-          console.log(fabric);
-          select.appendChild(createOption(fabric.title, fabric.image));
-        });
-      }
-      return { status: "success" };
-    }
   }
 })();

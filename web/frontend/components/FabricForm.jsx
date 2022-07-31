@@ -1,45 +1,28 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Card,
   Form,
   FormLayout,
-  Button,
-  Stack,
   Checkbox,
-  ChoiceList,
   TextField,
-  DropZone,
-  Banner,
-  MediaCard,
-  List,
-  TextStyle,
-  Tag,
-  Listbox,
-  EmptySearchResult,
-  Combobox,
   Frame,
   Toast
   
 } from "@shopify/polaris";
-import { NoteMinor } from "@shopify/polaris-icons";
 import {
-  useAppBridge,
   useNavigate,
   TitleBar
 } from "@shopify/app-bridge-react";
-import { useAuthenticatedFetch, useAppQuery } from "../hooks";
+import { useAuthenticatedFetch } from "../hooks";
 import { useForm, useField, notEmptyString } from "@shopify/react-form";
 import FormData from "form-data";
-import { LoadingCard } from "../components/LoadingCard";
 import { SelectImageCard } from "../components/SelectImageCard";
 import { SelectTagCard } from "../components/SelectTagCard";
 
 
 export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:breadcrumbs }) {
-  const debug = false;
   const [Entry, setEntry] = useState(InitialEntry);
   const navigate = useNavigate();
-  const appBridge = useAppBridge();
   const authFetch = useAuthenticatedFetch();
 
   // imgFile = full image file
@@ -47,6 +30,7 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
   // imgCreated = datetime of image upload to Shopify Files
   const [imgFile, setImgFile] = useState();
   const [imgUrl, setImgUrl] = useState(Entry?.image || "");
+  const [processing, setProcessing] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [doneUploading, setDoneUploading] = useState(false);
   const [imgAdded, setImgAdded] = useState(false);
@@ -121,6 +105,7 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
     const checkForUpload = async() => {
       if (imgAdded) {
         setUploading(true);
+        setProcessing(true);
         await sendUpload(imgFile);
         await delay(2000);
         setImgAdded(false);
@@ -235,20 +220,26 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
         if (uploadFile.ok) {
           const uploadResult = await uploadFile.json();
 
-          // wait 5 seconds for Shopify to finish processing the image
-          await delay(5000); 
+          // wait for Shopify to finish processing the image
           const createdAt = uploadResult.createdAt;
-          const getFile = await authFetch("/api/images/get",
-            {
-              method: "POST",
-              body: JSON.stringify({"creation": createdAt}),
-              headers: { "Content-Type": "application/json" },
+          let processing = true;
+          while (processing) {
+            let getFile = await authFetch("/api/images/get",
+              {
+                method: "POST",
+                body: JSON.stringify({"creation": createdAt}),
+                headers: { "Content-Type": "application/json" },
+              }
+            )
+            if (getFile.ok) {
+              let getFileResult = await getFile.json();
+              if (getFileResult.image != null){
+                setImgUrl(getFileResult.image.url);
+                setDoneUploading(true);
+                setProcessing(false);
+                processing = false;
+              }
             }
-          )
-          if (getFile.ok) {
-            const getFileResult = await getFile.json();
-            setDoneUploading(true);
-            setImgUrl(getFileResult.image.url);
           }
         }
       }
@@ -296,7 +287,7 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
   });
 
   const uploadingMarkup = uploading ? (
-    <Toast content="Uploading image..." onDismiss={toggleUploading} duration={10000}/>
+    <Toast content="Uploading image..." onDismiss={toggleUploading} duration={8000}/>
   ) : null;
 
   const doneUploadingMarkup = (doneUploading && imgUrl != "")  ? (
@@ -312,7 +303,7 @@ export function FabricForm ({ Entry: InitialEntry, Title:name, Breadcrumbs:bread
         primaryAction={{
           content: "Save",
           onAction: submit,
-          disabled: uploading && !doneUploading,
+          disabled: processing,
 
         }}
         secondaryActions={[

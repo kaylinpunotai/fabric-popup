@@ -1,9 +1,9 @@
-import { Card, Page, Layout, TextContainer, Heading, SkeletonBodyText } from "@shopify/polaris";
+import { Page } from "@shopify/polaris";
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
 import { LoadingCard } from "../../components/LoadingCard";
 import { EmptyListCard } from "../../components/EmptyListCard";
 import { TagIndex } from "../../components";
-import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import { useAppQuery } from "../../hooks";
 import { useState } from "react";
 
 

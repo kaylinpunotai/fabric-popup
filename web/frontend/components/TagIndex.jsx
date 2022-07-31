@@ -4,14 +4,13 @@ import {
   IndexTable,
   UnstyledLink,
   Filters,
-  Select,
   ChoiceList,
   Button,
   Icon
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import { DeleteMajor } from "@shopify/polaris-icons";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useAuthenticatedFetch } from "../hooks";
 
 // Function to truncate long strings
 function truncate(str, n) {
@@ -171,9 +170,9 @@ export function TagIndex(props) {
             <IndexTable.Cell classname="categoryCol">
               {category}
             </IndexTable.Cell>
-            <IndexTable.Cell classname="assignmentsCol">
+            {/* <IndexTable.Cell classname="assignmentsCol">
               {assignments}
-            </IndexTable.Cell>
+            </IndexTable.Cell> */}
             <IndexTable.Cell classname="notesCol">
               {truncate(notes, 25)}
             </IndexTable.Cell>
@@ -207,7 +206,7 @@ export function TagIndex(props) {
         headings={[
           { title: "Name" },
           { title: "Category" },
-          { title: "Assignments" },
+          // { title: "Assignments" },
           { title: "Notes" },
           { title: "Actions" },
         ]}

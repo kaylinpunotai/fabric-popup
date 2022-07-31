@@ -1,7 +1,6 @@
 import { DropZone, Stack, Banner, List, Card, MediaCard } from "@shopify/polaris";
 import { NoteMinor } from "@shopify/polaris-icons";
 import { useState, useCallback } from "react";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 
 function ImageDrop( props ) {

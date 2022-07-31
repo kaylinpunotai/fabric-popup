@@ -2,10 +2,6 @@ import { Card, Page, Layout, TextContainer, Stack, Heading, Button } from "@shop
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
 import { StatsCard } from "../components";
 
-///// WIP /////
-// - Update description
-// - Make neater
-
 export default function HomePage() {
   const navigate = useNavigate();
   return (
@@ -36,8 +32,7 @@ export default function HomePage() {
                   <li>Edit existing properties and images</li>
                   <li>Delete entries that are no longer available</li>
                   <li>Hide entries without deleting them</li>
-                  <li>Automatically updates fabric list within Fabric Options Popup section</li>
-                  <li>Modify and delete tags</li>
+                  <li>Changes fabric database will automatically update the Fabric Selection Add-On for all products</li>
                 </TextContainer>
               </Stack.Item>
             </Stack>
@@ -45,25 +40,6 @@ export default function HomePage() {
         </Layout.Section>        
         <Layout.Section>
           <StatsCard />
-        </Layout.Section>
-        <Layout.Section>
-          <Card sectioned>
-            <Stack
-              wrap={false}
-              spacing="extraTight"
-              distribution="trailing"
-              alignment="center"
-            >
-              <Stack.Item fill>
-                <TextContainer spacing="loose">
-                  <Heading>Additional Details</Heading>
-                  <li>Make sure tags are all typed exactly the same</li>
-                  <li>Only one image allowed per entry</li>
-                  <li>Notes are not viewable to the customer</li>
-                </TextContainer>
-              </Stack.Item>
-            </Stack>
-          </Card>
         </Layout.Section>
       </Layout>
     </Page>

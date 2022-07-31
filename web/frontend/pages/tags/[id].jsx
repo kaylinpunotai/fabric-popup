@@ -1,17 +1,14 @@
-import { Card, Page, Layout } from "@shopify/polaris";
-import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
+import { Page } from "@shopify/polaris";
 import { LoadingCard } from "../../components/LoadingCard";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { TagForm } from "../../components/TagForm";
-import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import { useAppQuery } from "../../hooks";
 
 
 export default function EditTag() {
   const debug = false;
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const fetch = useAuthenticatedFetch();
   const { id } = useParams();
   const breadcrumbs = [{ content: "Tag Data Table", url: "/tags/tag-table" }];
 

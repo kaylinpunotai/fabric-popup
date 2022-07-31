@@ -1,10 +1,10 @@
-import { Card, Page, Layout, TextContainer, Heading, ChoiceList, TextField, Filters, ResourceList, ResourceItem, TextStyle, Button, Avatar, SkeletonBodyText } from "@shopify/polaris";
-import { useState, useCallback } from "react";
+import { Page } from "@shopify/polaris";
+import { useState } from "react";
 import { TitleBar, useNavigate } from "@shopify/app-bridge-react";
 import { LoadingCard } from "../../components/LoadingCard";
 import { EmptyListCard } from "../../components/EmptyListCard";
 import { FabricIndex } from "../../components";
-import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import { useAppQuery } from "../../hooks";
 
 export default function FabricTable() {
   const debug = false;

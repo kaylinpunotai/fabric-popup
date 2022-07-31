@@ -5,9 +5,9 @@ import {
   TextContainer,
   DisplayText,
   TextStyle,
+  Stack
 } from "@shopify/polaris";
-import { Toast } from "@shopify/app-bridge-react";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useAppQuery } from "../hooks";
 
 export function StatsCard() {
   const [isLoading, setIsLoading] = useState(true);
@@ -92,56 +92,58 @@ export function StatsCard() {
         sectioned
         primaryFooterAction={null}
       >
-        <TextContainer spacing="loose">
-          <Heading element="h4">
-            TOTAL FABRICS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingTotalFabric ? "-" : totalFabric.length}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-          <Heading element="h4">
-            ACTIVE FABRICS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingActives ? "-" : actives.length}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-          <Heading element="h4">
-            HIDDEN FABRICS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingHiddens ? "-" : hiddens.length}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-          <Heading element="h4">
-            TOTAL COLORS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingColors ? "-" : colors.length}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-          <Heading element="h4">
-            TOTAL MATERIALS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingMaterials ? "-" : materials.length}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-          <Heading element="h4">
-            TOTAL PRODUCTS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingProducts ? "-" : products.count}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
-        </TextContainer>
+        <Stack>
+          <TextContainer spacing="loose">
+            <Heading element="h4">
+              TOTAL FABRICS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingTotalFabric ? "-" : totalFabric.length}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+            <Heading element="h4">
+              ACTIVE FABRICS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingActives ? "-" : actives.length}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+            <Heading element="h4">
+              HIDDEN FABRICS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingHiddens ? "-" : hiddens.length}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+            <Heading element="h4">
+              TOTAL COLORS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingColors ? "-" : colors.length}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+            <Heading element="h4">
+              TOTAL MATERIALS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingMaterials ? "-" : materials.length}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+            <Heading element="h4">
+              TOTAL PRODUCTS
+              <DisplayText size="medium">
+                <TextStyle variation="strong">
+                  {isLoadingProducts ? "-" : products.count}
+                </TextStyle>
+              </DisplayText>
+            </Heading>
+          </TextContainer>
+        </Stack>
       </Card>
     </>
   );

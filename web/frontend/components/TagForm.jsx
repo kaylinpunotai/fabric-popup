@@ -3,25 +3,20 @@ import {
   Card,
   Form,
   FormLayout,
-  Button,
-  Stack,
-  Checkbox,
   ChoiceList,
   TextField
 } from "@shopify/polaris";
 import {
-  useAppBridge,
   useNavigate,
   TitleBar
 } from "@shopify/app-bridge-react";
-import { useAuthenticatedFetch, useAppQuery } from "../hooks";
-import { useForm, useField, notEmptyString, propagateErrors } from "@shopify/react-form";
+import { useAuthenticatedFetch } from "../hooks";
+import { useForm, useField, notEmptyString } from "@shopify/react-form";
 
 
 export function TagForm ({ Tag: InitialTag, Title:title, Breadcrumbs:breadcrumbs }) {
   const [Tag, setTag] = useState(InitialTag);
   const navigate = useNavigate();
-  const appBridge = useAppBridge();
   const fetch = useAuthenticatedFetch();
 
   const [cat, setCat] = useState(Tag?.category || "Color");

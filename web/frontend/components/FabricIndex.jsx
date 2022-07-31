@@ -4,13 +4,9 @@ import {
   Icon,
   IndexTable,
   Filters,
-  Select,
-  useIndexResourceState,
-  TextStyle,
   Thumbnail,
   UnstyledLink,
   Button,
-  TextField,
   ChoiceList,
   Badge
 } from "@shopify/polaris";

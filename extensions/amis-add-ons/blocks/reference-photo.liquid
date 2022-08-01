@@ -1,0 +1,22 @@
+{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+
+<div>
+  <label for="ref_image_upload">Reference Photo</label>
+  <input id="ref_image_upload" type="file" form="{{ product_form_id }}" name="properties[Reference Photo]"/>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Reference photo",
+    "templates": ["product"],
+    "target": "section",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Display a button for the customer to optionally upload a reference photo"
+      }
+    ]
+  }
+{% endschema %}

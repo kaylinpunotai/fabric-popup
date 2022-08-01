@@ -69,7 +69,6 @@
   function handleOnChange() {
     const blocks = document.getElementsByClassName("fabric_option_block");
     [...blocks].forEach( (block) => {
-      console.log(block);
       const select = block.getElementsByClassName("fabric_select")[0];
       const wrapper = block.getElementsByClassName("wrapper")[0];
       const image = block.getElementsByClassName("pic")[0];

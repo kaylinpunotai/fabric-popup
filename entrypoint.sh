@@ -6,7 +6,7 @@ set -e
 rm -f /app/tmp/pids/server.pid
 
 # bin/rails db:create
-bin/rails db:schema:load
-bin/rails db:migrate
+# bin/rails db:schema:load
+# bin/rails db:migrate
 
 rails server -b 0.0.0.0 -e production

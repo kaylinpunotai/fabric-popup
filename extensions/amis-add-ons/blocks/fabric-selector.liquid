@@ -1,11 +1,30 @@
 {% comment %} 
-///// WIP /////
-- add material filters
+To add new material filters:
+- copy this at assignments
+<div class="filters" label="[Material]" checked="block.settings.[material]_cb"></div>
+- copy this at the end of schema
+      {
+        "type": "checkbox",
+        "id": "[material]_cb",
+        "label": "[Material]"
+      },
+
 {% endcomment %}
 
 
-{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+
+{% comment %} Filters defined by block settings {% endcomment %}
+<div class="material_filters" label="Cotton" checked="{{ block.settings.cotton_cb }}"></div>
+<div class="material_filters" label="Lycra" checked="{{ block.settings.lycra_cb }}"></div>
+<div class="material_filters" label="Felt" checked="{{ block.settings.felt_cb }}"></div>
+<div class="material_filters" label="Flannel" checked="{{ block.settings.flannel_cb }}"></div>
+<div class="material_filters" label="Minky" checked="{{ block.settings.minky_cb }}"></div>
+<div class="material_filters" label="Satin" checked="{{ block.settings.satin_cb }}"></div>
+
+
+{%- assign product_form_id = "product-form-template--" | append: block.settings.section_id | append: "__main" -%}
 {%- assign option_name = block.settings.fabric_option_name -%}
+
 
 <div class="fabric_option_block">
   <div>
@@ -32,21 +51,26 @@
 
 
 
-
-
-
-
-
 {% schema %}
   {
     "name": "Fabric Selector",
     "templates": ["product"],
     "target": "section",
     "javascript": "get-fabrics.js",
+    "stylesheet": "select-style.css",
     "settings": [
       {
         "type": "header",
-        "content": "Fabric option name:"
+        "content": "Section ID"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "label": "section=template--[14-digit section ID]"
+      },
+      {
+        "type": "header",
+        "content": "Fabric option name"
       },
       {
         "type": "text",
@@ -55,7 +79,7 @@
       },
       {
         "type": "header",
-        "content": "Image size:"
+        "content": "Image size"
       },
       {
         "type": "number",
@@ -71,7 +95,7 @@
       },
       {
         "type": "header",
-        "content": "Allowed fabrics:"
+        "content": "Allowed fabrics"
       },
       {
         "type": "checkbox",
@@ -105,11 +129,7 @@
       },
       {
         "type": "header",
-        "content": "Notes:"
-      },
-      {
-        "type": "paragraph",
-        "content": "Contact KK to add new fabric materials to this checkbox list."
+        "content": "Notes"
       },
       {
         "type": "paragraph",

@@ -1,24 +1,33 @@
-{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+{%- assign product_form_id = "product-form-template--" | append: block.settings.section_id | append: "__main" -%}
 
 <div>
-  <label for="custom-gift">This is a Gift</label>
   <input type="checkbox" value="Yes" id="custom-gift" form="{{ product_form_id }}" name="properties[This is a Gift]" />
+  <label for="custom-gift">This is a Gift</label>
 </div>
 
 {% schema %}
-    {
-      "name": "Gift checkbox",
-      "templates": ["product"],
-      "target": "section",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Gift Checkbox"
-        },
-        {
-          "type": "paragraph",
-          "content": "A checkbox to indicate that the product is a gift. This will show up with the product during checkout."
-        }
-      ]
-    }
+  {
+    "name": "Gift checkbox",
+    "templates": ["product"],
+    "target": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section ID"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "label": "section=template--[14-digit section ID]"
+      },
+      {
+        "type": "header",
+        "content": "Gift Checkbox"
+      },
+      {
+        "type": "paragraph",
+        "content": "A checkbox to indicate that the product is a gift. This will show up with the product during checkout."
+      }
+    ]
+  }
 {% endschema %}

@@ -1,10 +1,6 @@
 // Get fabrics and render Action Select for customer fabric selection
 // Loaded in fabric-selector.liquid
 
-
-///// WIP /////
-// - add material filters
-
 (function () {
   const debug = false;
   const proxySubpath = "/apps/api";
@@ -14,17 +10,20 @@
 
   // get filtered material from schema settings
   function getFilters() {
-    const filters = `{{ cotton }}`;
-    console.log(filters)
+    const filterCheckboxes = document.getElementsByClassName("material_filters");
+    let filters = [];
+    [...filterCheckboxes].forEach( (checkbox) => {
+      if (checkbox.getAttribute("checked") == "true") {
+        filters.push(checkbox.getAttribute("label"));
+      }
+    });
+    return filters;
   }
   
   // get all active fabrics filtered by allowed materials
-  function getFabrics(filters) {
-    const url = proxySubpath + "/api/fabric_entries/active"; // "/api/fabric_entries/filter";
-    const method = "GET"; // "POST"
-    const headers = { "Content-Type": "application/json" };
-    const body = ""; // {"fabric_entry": {"material": filters}};
-    return fetch(url); // return fetch(url, {method: method, headers: headers, body: JSON.stringify(body),});
+  function getFabrics() {
+    const url = proxySubpath + "/api/fabric_entries/active";
+    return fetch(url);
   }
 
   // create an option to be appended to the select input
@@ -38,7 +37,7 @@
 
   // set options for customers to select using fabric list
   async function setOptions() {
-    // const filters = getFilters();
+    let filters = getFilters();
     const selects = document.getElementsByClassName("fabric_select");
 
     if (debug) {
@@ -49,12 +48,26 @@
         });
       });
     } else {
-      const result = await getFabrics("filters");
+      const result = await getFabrics(filters);
       if (result.ok) {
         let fabrics = await result.json();
+
+        // add fabric only if it has an allowed material (based on filter)
         fabrics.forEach( (fabric) => {
           [...selects].forEach( (select) => {
-            select.appendChild(createOption(fabric.title, fabric.image));
+            let materials = JSON.parse(fabric.material);
+            let added = false;
+            materials.forEach( (material) => {
+              if (filters.includes(material) && added==false) {
+                select.appendChild(createOption(fabric.title, fabric.image));
+                // console.log("allowed");
+                // console.log(fabric);
+                added = true;
+              } else {
+                // console.log("excluded");
+                // console.log(fabric);
+              }
+            })
           });
         });
       }

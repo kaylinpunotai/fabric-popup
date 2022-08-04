@@ -1,21 +1,122 @@
 {% comment %} 
 ///// WIP /////
-- checkbox to add squeaker
+- checkbox to add squeaker variant
+- all other variants are shown as pills or dropdown
 - settings: $$$ per squeaker
-- if selected, display a paragraph in product listing
+- if selected, display a disclaimer in product listing
 {% endcomment %}
 
-{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+
+{%- assign product_form_id = "product-form-template--" | append: block.settings.section_id | append: "__main" -%}
+
+
+{%- unless product.has_only_default_variant -%}
+  {%- if block.settings.variant_select == 'button' -%}
+    <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+      {%- for option in product.options_with_values -%}
+        {% comment %} Only display options if they are not for squeakers {% endcomment %}
+        {%- if option.name != "Squeaker" -%}
+          <fieldset class="js product-form__input">
+            <legend class="form__label">{{ option.name }}</legend>
+            {%- for value in option.values -%}
+              <input type="radio" id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                    name="{{ option.name }}"
+                    value="{{ value | escape }}"
+                    form="{{ product_form_id }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+              >
+              <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+                {{ value }}
+              </label>
+            {%- endfor -%}
+          </fieldset>
+        {%- endif -%}
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    </variant-radios>
+  {%- else -%}
+    <variant-selector class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+      {%- for option in product.options_with_values -%}
+        Only display options if they are not for squeakers
+        {%- if option.name != "Squeaker" -%}
+          <div class="product-form__input product-form__input--dropdown">
+            <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <div class="select">
+              <select id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                class="select__select"
+                name="options[{{ option.name | escape }}]"
+                form="{{ product_form_id }}"
+              >
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                    {{ value }}
+                  </option>
+                {%- endfor -%}
+              </select>
+              {% render 'icon-caret' %}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    </variant-selector>
+  {%- endif -%}
+
+
+{%- endunless -%}
+
+
+
+
+
 
 {% schema %}
   {
-    "name": "Squeaker Checkbox",
+    "name": "Variant Selector",
     "templates": ["product"],
     "target": "section",
+    "javascript": "variant-selector.js",
     "settings": [
       {
         "type": "paragraph",
-        "content": "Display a checkbox that allows the customer to add a dog squeaker in the product"
+        "content": "Display a checkbox that allows the customer to add a dog squeaker in the product. Option MUST be named Squeaker and variants MUST be named Squeaker and No squeaker with correct case."
+      },
+      {
+        "type": "header",
+        "content": "Section ID"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "label": "section=template--[14-digit section ID]"
+      },
+      {
+        "type": "select",
+        "id": "variant_select",
+        "options": [
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          },
+          {
+            "value": "button",
+            "label": "Pills"
+          }
+        ],
+        "default": "button",
+        "label": "Select Type"
+      },
+      {
+        "type": "textarea",
+        "id": "squeaker_disclaimer",
+        "label": "Squeaker disclaimer message",
+        "default": "There are 2 options; Round & Tube. The round squeakers are best for smaller plush and contain 2-4 squeakers depending on the size of the plush. Tube squeakers are for plush that are over this approximate size 6in L x 3in W x 2.5in H, you will only get ONE in the plush. With this add-on, I will be reinforcing the fabric and seams. **Plush that CANNOT be pet toys are the ones that have a poly-pellet pouch to offset the weight of the head and the mini dino nuggets because they are too small."
       }
     ]
   }

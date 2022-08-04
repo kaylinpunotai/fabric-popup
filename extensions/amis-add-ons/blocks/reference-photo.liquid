@@ -1,4 +1,4 @@
-{%- assign product_form_id = 'product-form-' | append: "template--16271763669216__main" -%}
+{%- assign product_form_id = "product-form-template--" | append: block.settings.section_id | append: "__main" -%}
 
 <div>
   <label for="ref_image_upload">Reference Photo</label>
@@ -13,6 +13,15 @@
     "templates": ["product"],
     "target": "section",
     "settings": [
+      {
+        "type": "header",
+        "content": "Section ID"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "label": "section=template--[14-digit section ID]"
+      },
       {
         "type": "paragraph",
         "content": "Display a button for the customer to optionally upload a reference photo"

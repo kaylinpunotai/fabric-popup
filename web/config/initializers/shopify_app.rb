@@ -8,7 +8,7 @@ ShopifyApp.configure do |config|
   ]
   config.application_name = "Ami's Fabric Database"
   config.old_secret = ""
-  config.scope = ENV.fetch("SCOPES","read_products,write_products,read_files,write_files,read_product_listings,read_themes,write_themes") # See shopify.app.toml for scopes
+  config.scope = ENV.fetch("SCOPES","read_products,read_files,write_files,read_product_listings") # See shopify.app.toml for scopes
   
   # Consult this page for more scope options: https://shopify.dev/api/usage/access-scopes
   config.embedded_app = true

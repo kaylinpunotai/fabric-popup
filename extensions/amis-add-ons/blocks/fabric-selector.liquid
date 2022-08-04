@@ -12,16 +12,6 @@ To add new material filters:
 {% endcomment %}
 
 
-
-{% comment %} Filters defined by block settings {% endcomment %}
-<div class="material_filters" label="Cotton" checked="{{ block.settings.cotton_cb }}"></div>
-<div class="material_filters" label="Lycra" checked="{{ block.settings.lycra_cb }}"></div>
-<div class="material_filters" label="Felt" checked="{{ block.settings.felt_cb }}"></div>
-<div class="material_filters" label="Flannel" checked="{{ block.settings.flannel_cb }}"></div>
-<div class="material_filters" label="Minky" checked="{{ block.settings.minky_cb }}"></div>
-<div class="material_filters" label="Satin" checked="{{ block.settings.satin_cb }}"></div>
-
-
 {%- assign product_form_id = "product-form-template--" | append: block.settings.section_id | append: "__main" -%}
 {%- assign option_name = block.settings.fabric_option_name -%}
 
@@ -31,6 +21,17 @@ To add new material filters:
     <label for="fabric_option_{{ option_name }}">
       {{ option_name }}
     </label>
+
+
+    {% comment %} Filters defined by block settings {% endcomment %}
+    <div class="material_filters" label="Cotton" checked="{{ block.settings.cotton_cb }}"></div>
+    <div class="material_filters" label="Lycra" checked="{{ block.settings.lycra_cb }}"></div>
+    <div class="material_filters" label="Felt" checked="{{ block.settings.felt_cb }}"></div>
+    <div class="material_filters" label="Flannel" checked="{{ block.settings.flannel_cb }}"></div>
+    <div class="material_filters" label="Minky" checked="{{ block.settings.minky_cb }}"></div>
+    <div class="material_filters" label="Satin" checked="{{ block.settings.satin_cb }}"></div>
+
+
     <select id="fabric_option_{{ option_name }}"
       form="{{ product_form_id }}"
       name="properties[{{ option_name }}]"
@@ -48,7 +49,6 @@ To add new material filters:
     Request fabric: <input class="textbox" type="text"/>
   </div>
 </div> 
-
 
 
 {% schema %}

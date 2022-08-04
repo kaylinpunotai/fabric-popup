@@ -1,16 +1,21 @@
 // Get fabrics and render Action Select for customer fabric selection
 // Loaded in fabric-selector.liquid
 
+
 (function () {
   const debug = false;
   const proxySubpath = "/apps/api";
-  setOptions();
-  handleOnChange();
+
+  const blocks = document.getElementsByClassName("fabric_option_block");
+  [...blocks].forEach( (block) => {
+    setOptions(block);
+    handleOnChange(block);
+  });
 
 
   // get filtered material from schema settings
-  function getFilters() {
-    const filterCheckboxes = document.getElementsByClassName("material_filters");
+  function getFilters(block) {
+    const filterCheckboxes = block.getElementsByClassName("material_filters");
     let filters = [];
     [...filterCheckboxes].forEach( (checkbox) => {
       if (checkbox.getAttribute("checked") == "true") {
@@ -21,7 +26,7 @@
   }
   
   // get all active fabrics filtered by allowed materials
-  function getFabrics() {
+  function getAllFabrics() {
     const url = proxySubpath + "/api/fabric_entries/active";
     return fetch(url);
   }
@@ -36,9 +41,9 @@
   }
 
   // set options for customers to select using fabric list
-  async function setOptions() {
-    let filters = getFilters();
-    const selects = document.getElementsByClassName("fabric_select");
+  async function setOptions(block) {
+    const selects = block.getElementsByClassName("fabric_select");
+    const filters = getFilters(block);
 
     if (debug) {
       const fabrics = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"].sort();
@@ -48,7 +53,7 @@
         });
       });
     } else {
-      const result = await getFabrics(filters);
+      const result = await getAllFabrics();
       if (result.ok) {
         let fabrics = await result.json();
 
@@ -79,9 +84,9 @@
   // if Custom: display textbox for user-defined value
   // for pic: display pic
   // if pic=undefined: do not display pic
-  function handleOnChange() {
-    const blocks = document.getElementsByClassName("fabric_option_block");
-    [...blocks].forEach( (block) => {
+  function handleOnChange(block) {
+    // const blocks = document.getElementsByClassName("fabric_option_block");
+    // [...blocks].forEach( (block) => {
       const select = block.getElementsByClassName("fabric_select")[0];
       const wrapper = block.getElementsByClassName("wrapper")[0];
       const image = block.getElementsByClassName("pic")[0];
@@ -106,6 +111,6 @@
           image.style = "visibility: visible";
         }
       }      
-    });
+    // });
   }
 })();

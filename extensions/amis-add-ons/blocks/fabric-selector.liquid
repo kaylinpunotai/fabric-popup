@@ -18,7 +18,7 @@ To add new material filters:
 
 <div class="fabric_option_block">
   <div>
-    <label for="fabric_option_{{ option_name }}">
+    <label for="fabric_option_{{ option_name }}" class="fabric_option_label">
       {{ option_name }}
     </label>
 
@@ -31,16 +31,19 @@ To add new material filters:
     <div class="material_filters" label="Minky" checked="{{ block.settings.minky_cb }}"></div>
     <div class="material_filters" label="Satin" checked="{{ block.settings.satin_cb }}"></div>
 
-
-    <select id="fabric_option_{{ option_name }}"
-      form="{{ product_form_id }}"
-      name="properties[{{ option_name }}]"
-      class="fabric_select"
-    >
-      <option selected="" value="" disabled="" pic="">Select option</option>
-      <option class="custom_option" id="custom_select_{{ option_name }}" value="Custom: [blank]" pic="">-Custom-</option>
-      <option pic="">-Surprise me-</option>
-    </select>
+    <div class="fabric_select_wrapper">
+      <select id="fabric_option_{{ option_name }}"
+        form="{{ product_form_id }}"
+        name="properties[{{ option_name }}]"
+        class="fabric_select"
+      >
+        <option selected="" value="" disabled="" pic="">Select option</option>
+        <option class="custom_option" id="custom_select_{{ option_name }}" value="Custom: [blank]" pic="">-Custom-</option>
+        <option pic="">-Surprise me-</option>
+      
+      </select>
+      {% render 'icon-caret' %}
+    </div>
     <img class="pic" alt="" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy" style="visibility: hidden"
       src='data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3.6a1.6 1.6 0 0 1 1.6-1.6h3.4a1 1 0 0 1 0 2h-3v3a1 1 0 0 1-2 0v-3.4zm14.4-1.6a1.6 1.6 0 0 1 1.6 1.6v3.4a1 1 0 1 1-2 0v-3h-3a1 1 0 1 1 0-2h3.4zm0 16h-3.4a1 1 0 1 1 0-2h3v-3a1 1 0 1 1 2 0v3.4a1.6 1.6 0 0 1-1.6 1.6zm-12.8 0a1.6 1.6 0 0 1-1.6-1.6v-3.4a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3.4z"/></svg>' 
     >
@@ -57,7 +60,7 @@ To add new material filters:
     "templates": ["product"],
     "target": "section",
     "javascript": "get-fabrics.js",
-    "stylesheet": "select-style.css",
+    "stylesheet": "all-styles.css",
     "settings": [
       {
         "type": "header",

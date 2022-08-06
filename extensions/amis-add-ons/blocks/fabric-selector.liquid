@@ -16,8 +16,8 @@ To add new material filters:
 {%- assign option_name = block.settings.fabric_option_name -%}
 
 
-<div class="fabric_option_block" imgHeight="{{ block.settings.imageHeight }}" imgWidth="{{ block.settings.imageWidth }}" optionName="{{ option_name }}">
-  <input type="hidden" form="{{ product_form_id }}" name="properties[{{ option_name }}]">
+<div class="fabric_option_block" optionName="{{ option_name }}">
+  <input class="fabric_select_input" type="hidden" form="{{ product_form_id }}" name="properties[{{ option_name }}]">
   <div>
     <label class="fabric_option_label" for="fabric_option_{{ option_name }}">
       {{ option_name }}
@@ -34,13 +34,13 @@ To add new material filters:
 
 
     <div class="fabric_select_wrapper">
-      <div class="fabric_select" id="fabric_option_{{ option_name }}" selected="custom_option_default_{{ option_name }}">
-        <div class="fabric_select_default" id="custom_option_default_{{ option_name }}" data-value="">
-          Select option
+      <div class="fabric_select" id="fabric_option_{{ option_name }}" tabindex="0">
+        <div class="fabric_select_placeholder">
+          <div class="fabric_select_default">Select option</div>
         </div>
-        <div class="fabric_select_menu">
+        <div class="fabric_select_menu" style="display:none">
           <div class="custom_option" id="custom_option_custom_{{ option_name }}" data-value="Custom: [blank]">
-            <img class="option_pic" alt="" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy"
+            <img class="option_pic" alt="" height="40" width="40" loading="lazy"
               src='data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3.6a1.6 1.6 0 0 1 1.6-1.6h3.4a1 1 0 0 1 0 2h-3v3a1 1 0 0 1-2 0v-3.4zm14.4-1.6a1.6 1.6 0 0 1 1.6 1.6v3.4a1 1 0 1 1-2 0v-3h-3a1 1 0 1 1 0-2h3.4zm0 16h-3.4a1 1 0 1 1 0-2h3v-3a1 1 0 1 1 2 0v3.4a1.6 1.6 0 0 1-1.6 1.6zm-12.8 0a1.6 1.6 0 0 1-1.6-1.6v-3.4a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3.4z"/></svg>' 
             >
             <span class="option_text">
@@ -48,7 +48,7 @@ To add new material filters:
             </span>
           </div>
           <div class="custom_option" id="custom_option_surprise_{{ option_name }}" data-value="Surprise me">
-            <img class="option_pic" alt="" height="{{ block.settings.imageHeight }}" width="{{ block.settings.imageWidth }}" loading="lazy"
+            <img class="option_pic" alt="" height="40" width="40" loading="lazy"
               src='data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3.6a1.6 1.6 0 0 1 1.6-1.6h3.4a1 1 0 0 1 0 2h-3v3a1 1 0 0 1-2 0v-3.4zm14.4-1.6a1.6 1.6 0 0 1 1.6 1.6v3.4a1 1 0 1 1-2 0v-3h-3a1 1 0 1 1 0-2h3.4zm0 16h-3.4a1 1 0 1 1 0-2h3v-3a1 1 0 1 1 2 0v3.4a1.6 1.6 0 0 1-1.6 1.6zm-12.8 0a1.6 1.6 0 0 1-1.6-1.6v-3.4a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3.4z"/></svg>' 
             >
             <span class="option_text">
@@ -60,8 +60,8 @@ To add new material filters:
       {% render 'icon-caret' %}
     </div>
   </div>
-  <div class="wrapper" style="visibility: hidden">
-    Request fabric: <input class="textbox" type="text"/>
+  <div class="custom_textbox_wrapper" style="display:none">
+    Request fabric: <input class="custom_textbox" type="text"/>
   </div>
 </div> 
 
@@ -72,7 +72,7 @@ To add new material filters:
     "templates": ["product"],
     "target": "section",
     "javascript": "get-fabrics.js",
-    "stylesheet": "all-styles.css",
+    "stylesheet": "fabric-selector-styles.css",
     "settings": [
       {
         "type": "header",
@@ -91,22 +91,6 @@ To add new material filters:
         "type": "text",
         "id": "fabric_option_name",
         "label": "e.g. eyes, main body, accent"
-      },
-      {
-        "type": "header",
-        "content": "Image size"
-      },
-      {
-        "type": "number",
-        "id": "imageHeight",
-        "label": "Height:",
-        "default": 50
-      },
-      {
-        "type": "number",
-        "id": "imageWidth",
-        "label": "Width:",
-        "default": 50
       },
       {
         "type": "header",
